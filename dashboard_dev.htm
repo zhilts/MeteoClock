@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meteo clock setup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+<body>
+<form action="/update" method="POST">
+    <p>
+        <label for="LedValue">Led value:</label>
+        <select id="LedValue" name="ledValue">
+            <option value="0">Off</option>
+            <option value="1">Red</option>
+            <option value="2">Green</option>
+            <option value="3">Yellow</option>
+        </select>
+    </p>
+    <p>
+        <label for="LcdText">LCD Text:</label>
+        <input id="LcdText" name="lcdText"/>
+    </p>
+    <button type="submit">Save</button>
+</form>
+<script>
+    // test-data-start
+    const currentData = {
+        ledValue: 2,
+    };
+    // test-data-end
+    const {ledValue} = currentData;
+    $(`#LedValue option[value="${ledValue}"]`).prop('selected', true);
+</script>
+</body>
+</html>
