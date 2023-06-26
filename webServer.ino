@@ -20,7 +20,8 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "            <option value=\"0\">Off</option>\n"
                          "            <option value=\"1\">Red</option>\n"
                          "            <option value=\"2\">Green</option>\n"
-                         "            <option value=\"3\">Yellow</option>\n"
+                         "            <option value=\"3\">Blue</option>\n"
+                         "            <option value=\"4\">Yellow</option>\n"
                          "        </select>\n"
                          "    </p>\n"
                          "    <p>\n"
@@ -57,6 +58,7 @@ void httpUpdate() {
 
     String lcdText = server.arg("lcdText");
     if (lcdText.length() > 0) {
+        lcdSetCursor(0, 3);
         lcdPrint(lcdText);
     }
 

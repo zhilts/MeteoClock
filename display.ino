@@ -13,7 +13,6 @@ void lcdSetCursor(int x, int y) {
 }
 
 void lcdPrint(String text) {
-    log("LCD print: " + text);
     lcd.print(text);
 }
 

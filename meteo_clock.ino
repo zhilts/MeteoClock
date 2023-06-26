@@ -1,30 +1,39 @@
 #include "Secrets.h"
+#include "Config.h"
+
 
 void setup() {
     connectWifi();
     log("Starting");
-    setupLCD();
     setupOTA();
+    setupLCD();
     setupButton();
     setupRGB();
     setupServer();
+    setupCO2();
+    setupRTC();
+    setupBME();
 }
 
-int lastButton = -1;
+void debugLoop() {
+    lcdSetCursor(14, 1);
+    lcdPrint("P:    ");
+    lcdSetCursor(16, 1);
+    lcdPrint(String(getBrightness()));
+
+    lcdSetCursor(14, 2);
+    lcdPrint("B:    ");
+    lcdSetCursor(16, 2);
+    lcdPrint(String(buttonGetValue()));
+
+    delay(300);
+}
 
 void loop() {
     otaHandle();
     serverHandle();
-    int touchValue = buttonGetValue();
 
-    if (touchValue != lastButton) {
-        if (touchValue == HIGH) {
-            lcdSetCursor(0, 0);
-            lcdPrint("Touch Detected");
-            log("Touch Detected");
-        } else {
-            lcdClear();
-        }
-        lastButton = touchValue;
-    }
+#if (DEBUG == 1)
+    debugLoop();
+#endif
 }

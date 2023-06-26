@@ -1,3 +1,5 @@
+#define DEBUG 1
+
 #define TOUCH_PIN 2
 
 #define LCD_ADDRESS 0x27
@@ -13,3 +15,9 @@
 #define HTTP_LOG_ENABLED true
 #define HTTP_LOG_ADDRESS "MacBook-Pro-2023.local"
 #define HTTP_LOG_PORT 8000
+
+#define CO2_SENSOR 1
+#define MHZ_RX 25
+#define MHZ_TX 26
+
+#define PHOTO 32
