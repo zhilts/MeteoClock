@@ -1,4 +1,5 @@
 #define DEBUG 1
+#define RESET_CLOCK true
 
 #define TOUCH_PIN 2
 

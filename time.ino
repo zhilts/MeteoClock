@@ -4,7 +4,7 @@ RTC_DS3231 rtc;
 
 void setupRTC() {
 #if (DEBUG == 1)
-    setLED(2);
+    rgbSetValue(2);
     lcdSetCursor(0, 1);
     lcdPrint(F("RTC... "));
     log(F("RTC... "));
@@ -19,4 +19,13 @@ void setupRTC() {
         log(F("ERROR"));
     }
 #endif
+    if (RESET_CLOCK || rtc.lostPower())
+        rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
 }
+
+//DateTimeStructure getNow() {
+//    DateTime now = rtc.now();
+//    return {
+//        hour: now.hour(),
+//    };
+//}

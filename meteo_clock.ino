@@ -1,6 +1,8 @@
 #include "Secrets.h"
 #include "Config.h"
 
+#include "led.h"
+
 
 void setup() {
     connectWifi();
@@ -32,6 +34,8 @@ void debugLoop() {
 void loop() {
     otaHandle();
     serverHandle();
+
+    rgbSetValue(RGB_GREEN);
 
 #if (DEBUG == 1)
     debugLoop();

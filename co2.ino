@@ -4,7 +4,7 @@ MHZ19_uart mhz19;
 
 void setupCO2() {
 #if (DEBUG == 1)
-    setLED(1);
+    rgbSetValue(1);
     lcdSetCursor(0, 0);
     lcdPrint(F("MHZ-19... "));
     log(F("MHZ-19... "));

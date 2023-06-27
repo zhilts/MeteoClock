@@ -41,7 +41,7 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
 void httpDashboard() {
     DynamicJsonDocument jsonDoc(256);
 
-    jsonDoc["ledValue"] = ledGetCurrentValue();
+    jsonDoc["ledValue"] = rgbGetValue();
 
     String jsonString;
     serializeJson(jsonDoc, jsonString);
@@ -54,7 +54,7 @@ void httpDashboard() {
 void httpUpdate() {
     int ledValue = server.arg("ledValue").toInt();
     log("ledValue: " + String(ledValue));
-    setLED(ledValue);
+    rgbSetValue(ledValue);
 
     String lcdText = server.arg("lcdText");
     if (lcdText.length() > 0) {

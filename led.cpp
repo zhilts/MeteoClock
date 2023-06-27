@@ -1,3 +1,6 @@
+#include <Arduino.h>
+#include "led.h"
+
 #include "Config.h"
 
 #if (LED_MODE == 0)
@@ -8,15 +11,9 @@ int LED_ON = 0;
 int LED_OFF = 255;
 #endif
 
-const int RGB_OFF = 0;
-const int RGB_RED = 1;
-const int RGB_GREEN = 2;
-const int RGB_BLUE = 3;
-const int RGB_YELLOW = 4;
-
 int currentValue = -1;
 
-void setLED(int color) {
+void rgbSetValue(int color) {
     switch (color) {
         case RGB_OFF:
             analogWrite(LED_R, LED_OFF);
@@ -47,7 +44,7 @@ void setLED(int color) {
     currentValue = color;
 }
 
-int ledGetCurrentValue() {
+int rgbGetValue() {
     return currentValue;
 }
 
@@ -61,5 +58,5 @@ void setupRGB() {
 #else
     analogWrite(LED_COM, 255);
 #endif
-    setLED(RGB_OFF);
+    rgbSetValue(RGB_OFF);
 }
