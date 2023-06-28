@@ -1,3 +1,6 @@
+#ifndef METEO_CLOCK_CONFIG_H
+#define METEO_CLOCK_CONFIG_H
+
 #define DEBUG 1
 #define RESET_CLOCK true
 
@@ -22,3 +25,5 @@
 #define MHZ_TX 26
 
 #define PHOTO 32
+
+#endif //METEO_CLOCK_CONFIG_H

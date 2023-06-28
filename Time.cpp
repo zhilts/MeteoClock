@@ -1,4 +1,11 @@
+#include "Config.h"
+#include "Time.h"
+
 #include "RTClib.h"
+
+#include "Display.h"
+#include "Log.h"
+#include "Led.h"
 
 RTC_DS3231 rtc;
 
@@ -23,9 +30,6 @@ void setupRTC() {
         rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
 }
 
-//DateTimeStructure getNow() {
-//    DateTime now = rtc.now();
-//    return {
-//        hour: now.hour(),
-//    };
-//}
+DateTime getNow() {
+    return rtc.now();
+}

@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "Config.h"
 
 void setupButton() {

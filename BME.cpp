@@ -1,5 +1,11 @@
 #include <Adafruit_BME280.h>
 
+#include "BME.h"
+#include "Log.h"
+#include "Led.h"
+#include "Display.h"
+#include "Config.h"
+
 Adafruit_BME280 bme;
 
 uint32_t pressure_array[6];

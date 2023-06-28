@@ -1,4 +1,6 @@
 #include <WiFi.h>
+#include "Secrets.h"
+#include "WiFiConnection.h"
 
 void connectWifi() {
     WiFi.begin(WIFI_SSID, WIFI_PASS);

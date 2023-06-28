@@ -1,7 +1,16 @@
-#include "Secrets.h"
 #include "Config.h"
 
-#include "led.h"
+#include "Log.h"
+#include "WiFiConnection.h"
+#include "OTA.h"
+#include "Led.h"
+#include "Time.h"
+#include "Display.h"
+#include "WebDashboard.h"
+#include "Photo.h"
+#include "BME.h"
+#include "CO2.h"
+#include "Button.h"
 
 
 void setup() {
@@ -18,15 +27,20 @@ void setup() {
 }
 
 void debugLoop() {
+#if (DEBUG != 1)
+    return;
+#endif
     lcdSetCursor(14, 1);
     lcdPrint("P:    ");
     lcdSetCursor(16, 1);
     lcdPrint(String(getBrightness()));
 
-    lcdSetCursor(14, 2);
-    lcdPrint("B:    ");
     lcdSetCursor(16, 2);
+    lcdPrint("B:  ");
+    lcdSetCursor(18, 2);
     lcdPrint(String(buttonGetValue()));
+
+    co2LogStatus();
 
     delay(300);
 }
@@ -34,10 +48,7 @@ void debugLoop() {
 void loop() {
     otaHandle();
     serverHandle();
-
-    rgbSetValue(RGB_GREEN);
-
-#if (DEBUG == 1)
     debugLoop();
-#endif
+
+    getNow();
 }

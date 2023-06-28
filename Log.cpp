@@ -1,3 +1,5 @@
+#include "Log.h"
+
 #if HTTP_LOG_ENABLED
 #include <WiFiClient.h>
 #endif

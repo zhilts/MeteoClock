@@ -2,6 +2,10 @@
 #include <ESPmDNS.h>
 #include <ArduinoJson.h>
 
+#include "Log.h"
+#include "Led.h"
+#include "Display.h"
+
 WebServer server(80);
 
 const String DASHBOARD = "<!DOCTYPE html>\n"

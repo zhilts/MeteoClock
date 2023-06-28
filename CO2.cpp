@@ -1,5 +1,10 @@
 #include <MHZ19_uart.h>
 
+#include "Config.h"
+#include "Log.h"
+#include "Display.h"
+#include "Led.h"
+
 MHZ19_uart mhz19;
 
 void setupCO2() {
@@ -25,5 +30,8 @@ void setupCO2() {
 }
 
 void co2LogStatus() {
-    log("mhz19 status: " + String(mhz19.getStatus()));
+    lcdSetCursor(16, 0);
+    lcdPrint("  ");
+    lcdSetCursor(16, 0);
+    lcdPrint(String(mhz19.getStatus()));
 }
