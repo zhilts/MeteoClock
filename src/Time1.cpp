@@ -1,9 +1,9 @@
-#include "Config.h"
-#include "Time.h"
+#include "ConfigWTF.h"
+#include "Time1.h"
 
-#include "RTClib.h"
+#include <RTClib.h>
 
-#include "Display.h"
+#include "Display1.h"
 #include "Log.h"
 #include "Led.h"
 

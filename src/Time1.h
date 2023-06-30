@@ -1,7 +1,7 @@
 #ifndef METEO_CLOCK_TIME_H
 #define METEO_CLOCK_TIME_H
 
-#include "RTClib.h"
+#include <RTClib.h>
 
 void setupRTC();
 DateTime getNow();

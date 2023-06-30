@@ -1,10 +1,10 @@
-#include <Adafruit_BME280.h>
+#include "../lib/Adafruit_BME280.h"
 
 #include "BME.h"
 #include "Log.h"
 #include "Led.h"
-#include "Display.h"
-#include "Config.h"
+#include "Display1.h"
+#include "ConfigWTF.h"
 
 Adafruit_BME280 bme;
 

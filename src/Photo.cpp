@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "Config.h"
+#include "ConfigWTF.h"
 #include "Photo.h"
 
 int getBrightness() {

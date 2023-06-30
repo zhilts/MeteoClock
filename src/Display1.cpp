@@ -1,7 +1,7 @@
 #include <LiquidCrystal_I2C.h>
-#include "Config.h"
+#include "ConfigWTF.h"
 
-#include "Display.h"
+#include "Display1.h"
 
 LiquidCrystal_I2C lcd(LCD_ADDRESS, I2C_A, I2C_B);
 

@@ -1,11 +1,11 @@
-#include <MHZ19_uart.h>
+#include "MHZ19.h"
 
-#include "Config.h"
+#include "ConfigWTF.h"
 #include "Log.h"
-#include "Display.h"
+#include "Display1.h"
 #include "Led.h"
 
-MHZ19_uart mhz19;
+MHZ19 mhz19;
 
 void setupCO2() {
 #if (DEBUG == 1)
