@@ -43,4 +43,5 @@
 
 #define PHOTO 32 
 
+
 #endif //METEO_CLOCK_CONFIG_H

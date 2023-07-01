@@ -6,6 +6,7 @@
 #include "Led.h"
 
 MHZ19 mhz19;
+
 HardwareSerial mySerial(2);
 
 void setupCO2() {
@@ -15,6 +16,7 @@ void setupCO2() {
     lcdPrint(F("MHZ-19... "));
     log(F("MHZ-19... "));
 #endif
+
     mySerial.begin(MHZ_BAUD);
     mhz19.begin(mySerial);
     mhz19.autoCalibration(false);
@@ -34,4 +36,3 @@ void co2LogStatus() {
     char mVersion[4];
     mhz19.getVersion(mVersion);
     lcdPrint(String(mVersion));
-}
