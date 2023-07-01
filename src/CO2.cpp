@@ -36,3 +36,4 @@ void co2LogStatus() {
     char mVersion[4];
     mhz19.getVersion(mVersion);
     lcdPrint(String(mVersion));
+}
