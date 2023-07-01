@@ -1,5 +1,11 @@
 #include <WiFi.h>
-#include "Secrets.h"
+
+#if __has_include("Secrets.h")
+    #include "Secrets.h"
+#else
+    #include "ConfigWTF.h"
+#endif
+#include "ConfigWTF.h"
 #include "WiFiConnection.h"
 
 void connectWifi() {

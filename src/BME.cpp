@@ -1,4 +1,4 @@
-#include "../lib/Adafruit_BME280.h"
+#include "Adafruit_BME280.h"
 
 #include "BME.h"
 #include "Log.h"
@@ -19,7 +19,7 @@ void setupBME() {
     log(F("BME280... "));
     delay(50);
 #endif
-    bool status = bme.begin(&Wire);
+    bool status = bme.begin(BME280_ADDRESS, &Wire);
 #if (DEBUG == 1)
     if (status) {
         lcdPrint(F("OK"));

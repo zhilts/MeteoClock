@@ -7,6 +7,8 @@
 
 MHZ19 mhz19;
 
+HardwareSerial mySerial(2);
+
 void setupCO2() {
 #if (DEBUG == 1)
     rgbSetValue(1);
@@ -14,18 +16,16 @@ void setupCO2() {
     lcdPrint(F("MHZ-19... "));
     log(F("MHZ-19... "));
 #endif
-    mhz19.begin(MHZ_TX, MHZ_RX);
-    mhz19.setAutoCalibration(false);
+
+    mySerial.begin(MHZ_BAUD);
+    mhz19.begin(mySerial);
+    mhz19.autoCalibration(false);
 #if (DEBUG == 1)
-    mhz19.getStatus();
+    char mVersion[4];
+    mhz19.getVersion(mVersion);
     delay(500);
-    if (mhz19.getStatus() == 0) {
-        lcdPrint(F("OK"));
-        log(F("OK"));
-    } else {
-        lcdPrint(F("ERROR"));
-        log(F("ERROR"));
-    }
+    lcdPrint(mVersion);
+    log("MHZ-19_FW_version: " + String(mVersion));
 #endif
 }
 
@@ -33,5 +33,6 @@ void co2LogStatus() {
     lcdSetCursor(16, 0);
     lcdPrint("  ");
     lcdSetCursor(16, 0);
-    lcdPrint(String(mhz19.getStatus()));
-}
+    char mVersion[4];
+    mhz19.getVersion(mVersion);
+    lcdPrint(String(mVersion));
