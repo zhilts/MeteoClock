@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 #include "Config.h"
 
 #include "Log.h"
@@ -14,8 +16,8 @@
 
 
 void setup() {
+    Serial.begin(9600);
     connectWifi();
-    log("Starting");
     setupOTA();
     setupLCD();
     setupButton();
@@ -30,25 +32,18 @@ void debugLoop() {
 #if (DEBUG != 1)
     return;
 #endif
-    lcdSetCursor(14, 1);
-    lcdPrint("P:    ");
-    lcdSetCursor(16, 1);
-    lcdPrint(String(getBrightness()));
-
-    lcdSetCursor(16, 2);
-    lcdPrint("B:  ");
-    lcdSetCursor(18, 2);
-    lcdPrint(String(buttonGetValue()));
-
-    co2LogStatus();
-
-    delay(300);
+    log("----- DEBUG ------");
+    log("Photo: " + String(getBrightness()));
+    log("Button: " + String(buttonGetValue()));
+    log("CO2: " + getCo2DebugSting());
+    log("Time: " + getNowISO());
+    log("BME: " + bmeGetDebugString());
+    log("Logs: " + getHttpLogsHost() + ":" + getHttpLogsPort());
+    delay(1000);
 }
 
 void loop() {
     otaHandle();
     serverHandle();
     debugLoop();
-
-    getNow();
 }

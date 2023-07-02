@@ -12,7 +12,6 @@ void setupCO2() {
     rgbSetValue(1);
     lcdSetCursor(0, 0);
     lcdPrint(F("MHZ-19... "));
-    log(F("MHZ-19... "));
 #endif
     mhz19.begin(MHZ_TX, MHZ_RX);
     mhz19.setAutoCalibration(false);
@@ -21,17 +20,22 @@ void setupCO2() {
     delay(500);
     if (mhz19.getStatus() == 0) {
         lcdPrint(F("OK"));
-        log(F("OK"));
+        log(F("MHZ-19: OK"));
     } else {
         lcdPrint(F("ERROR"));
-        log(F("ERROR"));
+        log(F("MHZ-19: ERROR"));
     }
 #endif
 }
 
-void co2LogStatus() {
-    lcdSetCursor(16, 0);
-    lcdPrint("  ");
-    lcdSetCursor(16, 0);
-    lcdPrint(String(mhz19.getStatus()));
+int getCo2Status() {
+    return mhz19.getStatus();
+}
+
+int getCO2() {
+    return mhz19.getPPM();
+}
+
+String getCo2DebugSting() {
+    return "Status: " + String(mhz19.getStatus()) + " CO2: " + String(getCO2()) + "ppm";
 }

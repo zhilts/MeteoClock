@@ -5,5 +5,6 @@
 
 void setupRTC();
 DateTime getNow();
+String getNowISO();
 
 #endif //METEO_CLOCK_TIME_H

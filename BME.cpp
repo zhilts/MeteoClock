@@ -16,17 +16,17 @@ void setupBME() {
     rgbSetValue(3);
     lcdSetCursor(0, 2);
     lcdPrint(F("BME280... "));
-    log(F("BME280... "));
     delay(50);
 #endif
     bool status = bme.begin(&Wire);
 #if (DEBUG == 1)
     if (status) {
         lcdPrint(F("OK"));
-        log(F("OK"));
+        log(F("BME280: OK"));
     } else {
         lcdPrint(F("ERROR"));
-        log(F("ERROR"));
+        log(F("BME280: ERROR"));
+        return;
     }
 #endif
 
@@ -42,4 +42,20 @@ void setupBME() {
         pressure_array[i] = Pressure;
         time_array[i] = i;
     }
+}
+
+float getPressure() {
+    return bme.readPressure();
+}
+
+float getTemperature() {
+    return bme.readTemperature();
+}
+
+byte getHumidity() {
+    return bme.readHumidity();
+}
+
+String bmeGetDebugString() {
+    return "Pressure: " + String(getPressure()) + " Temp: " + String(getTemperature()) + " Hum: " + String(getHumidity());
 }

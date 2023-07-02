@@ -1,30 +1,64 @@
 #include "Log.h"
+#include "Config.h"
+#include "Secrets.h"
 
-#if HTTP_LOG_ENABLED
 #include <WiFiClient.h>
-#endif
+
+void setupLog() {
+    Serial.begin(9600);
+}
+
+bool isHttpEnabled = HTTP_LOG_ENABLED;
+String httpLogsHost = HTTP_LOG_ADDRESS;
+int httpLogsPort = HTTP_LOG_PORT;
+
+bool getHttpLogsEnabled() {
+    return isHttpEnabled;
+}
+
+void setHttpLogsEnabled(bool enabled) {
+    isHttpEnabled = enabled;
+}
+
+String getHttpLogsHost() {
+    return String(httpLogsHost);
+}
+
+void setHttpLogsHost(String host) {
+    httpLogsHost = host;
+}
+
+int getHttpLogsPort() {
+    return httpLogsPort;
+}
+
+void setHttpLogsPort(int port) {
+    httpLogsPort = port;
+}
 
 void log(String message) {
-#if HTTP_LOG_ENABLED
-    WiFiClient client;
+    if (isHttpEnabled) {
+        Serial.println("HTTP Log");
+        WiFiClient client;
 
-    String formattedMessage = String(RIG_IDENTIFIER) + ": " + message;
+        String formattedMessage = String(RIG_IDENTIFIER) + ": " + message;
 
-    if (client.connect(HTTP_LOG_ADDRESS, HTTP_LOG_PORT)) {
-        client.println("POST / HTTP/1.1");
-        client.println("Host: " + String(HTTP_LOG_ADDRESS));
-        client.println("Connection: close");
-        client.println("Content-Type: plain/text");
-        client.print("Content-Length: ");
-        client.println(formattedMessage.length());
-        client.println();
-        client.println(formattedMessage);
+        if (client.connect(httpLogsHost.c_str(), httpLogsPort)) {
+            client.println("POST / HTTP/1.1");
+            client.println("Host: " + String(httpLogsHost));
+            client.println("Connection: close");
+            client.println("Content-Type: plain/text");
+            client.print("Content-Length: ");
+            client.println(formattedMessage.length());
+            client.println();
+            client.println(formattedMessage);
 
-        while (client.connected()) {
-            String line = client.readStringUntil('\n');
+            while (client.connected()) {
+                String line = client.readStringUntil('\n');
+            }
+
+            client.stop();
         }
-
-        client.stop();
     }
-#endif
+    Serial.println(message);
 }
