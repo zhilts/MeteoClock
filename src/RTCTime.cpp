@@ -1,7 +1,7 @@
 #include "Config.h"
-#include "Time.h"
+#include "RTCTime.h"
 
-#include "RTClib.h"
+#include <RTClib.h>
 
 #include "Display.h"
 #include "Log.h"

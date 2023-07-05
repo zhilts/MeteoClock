@@ -1,6 +1,7 @@
 #include <Adafruit_BME280.h>
 
 #include "BME.h"
+#include "Config.h"
 #include "Log.h"
 #include "Led.h"
 #include "Display.h"
@@ -18,7 +19,8 @@ void setupBME() {
     lcdPrint(F("BME280... "));
     delay(50);
 #endif
-    bool status = bme.begin(&Wire);
+    log("Starting BME at " + String(BME280_ADDRESS));
+    bool status = bme.begin(BME280_ADDRESS, &Wire);
 #if (DEBUG == 1)
     if (status) {
         lcdPrint(F("OK"));

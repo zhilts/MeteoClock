@@ -1,4 +1,6 @@
 #include <ArduinoOTA.h>
+
+#include "Config.h"
 #include "Secrets.h"
 #include "OTA.h"
 

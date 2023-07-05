@@ -6,7 +6,7 @@
 #include "WiFiConnection.h"
 #include "OTA.h"
 #include "Led.h"
-#include "Time.h"
+#include "RTCTime.h"
 #include "Display.h"
 #include "WebDashboard.h"
 #include "Photo.h"
@@ -14,9 +14,8 @@
 #include "CO2.h"
 #include "Button.h"
 
-
 void setup() {
-    Serial.begin(9600);
+    setupLog();
     connectWifi();
     setupOTA();
     setupLCD();

@@ -16,9 +16,9 @@
 
 #define HTTP_LOG_ENABLED false
 
-#define CO2_SENSOR 1
-#define MHZ_RX 17
-#define MHZ_TX 16
+#define MHZ_BAUD 9600
+
+#define BME280_ADDRESS (0x76)
 
 #define PHOTO 32
 
