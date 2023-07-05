@@ -16,6 +16,7 @@
 
 #define HTTP_LOG_ENABLED false
 
+#define SERIAL_MONITOR_BAUD 9600
 #define MHZ_BAUD 9600
 
 #define BME280_ADDRESS (0x76)

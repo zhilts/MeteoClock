@@ -5,7 +5,7 @@
 #include <WiFiClient.h>
 
 void setupLog() {
-    Serial.begin(9600);
+    Serial.begin(SERIAL_MONITOR_BAUD);
 }
 
 bool isHttpEnabled = HTTP_LOG_ENABLED;
