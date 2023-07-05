@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <Arduino.h>
 #include "Config.h"
 
 #include "Display.h"
