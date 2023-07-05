@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "ConfigWTF.h"
+#include "Config.h"
 
 void setupButton() {
     pinMode(TOUCH_PIN, INPUT);

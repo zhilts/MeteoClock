@@ -1,7 +1,7 @@
 #include <ArduinoOTA.h>
 
-#include "ConfigWTF.h"
-//#include "Secrets.h"
+#include "Config.h"
+#include "Secrets.h"
 #include "OTA.h"
 
 void setupOTA() {

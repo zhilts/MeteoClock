@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "Led.h"
 
-#include "ConfigWTF.h"
+#include "Config.h"
 
 #if (LED_MODE == 0)
 const int LED_ON = 255;

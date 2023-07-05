@@ -5,7 +5,7 @@
 #else
     #include "ConfigWTF.h"
 #endif
-#include "ConfigWTF.h"
+#include "Config.h"
 #include "WiFiConnection.h"
 
 void connectWifi() {

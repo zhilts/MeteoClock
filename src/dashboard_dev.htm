@@ -5,33 +5,84 @@
     <title>Meteo clock setup</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <style>
+        .section {
+        }
+    </style>
 </head>
 <body>
-<form action="/update" method="POST">
+<div class="section">
+    <h2>Status</h2>
     <p>
-        <label for="LedValue">Led value:</label>
-        <select id="LedValue" name="ledValue">
-            <option value="0">Off</option>
-            <option value="1">Red</option>
-            <option value="2">Green</option>
-            <option value="3">Blue</option>
-            <option value="4">Yellow</option>
-        </select>
+        CO2: <span id="co2Value"></span> ppm; Status: <span id="co2Status"></span>
     </p>
     <p>
-        <label for="LcdText">LCD Text:</label>
-        <input id="LcdText" name="lcdText"/>
+        Pressure: <span id="pressure"></span> Pa; Temperature: <span id="temperature"></span>°C; Humidity: <span
+            id="humidity"></span>%
     </p>
-    <button type="submit">Save</button>
-</form>
+    <p>
+        Time: <span id="time"></span>
+    </p>
+</div>
+<div class="section">
+    <h2>Update</h2>
+    <form action="/update" method="POST">
+        <p>
+            <label for="LedValue">Led value:</label>
+            <select id="LedValue" name="ledValue">
+                <option value="0">Off</option>
+                <option value="1">Red</option>
+                <option value="2">Green</option>
+                <option value="3">Blue</option>
+                <option value="4">Yellow</option>
+            </select>
+        </p>
+        <p>
+            <label for="LcdText">LCD Text:</label>
+            <input id="LcdText" name="lcdText"/>
+        </p>
+        <p>
+            <label for="LogsEnabled">Logs:</label>
+            <input type="checkbox" id="LogsEnabled" name="logsEnabled">
+
+            <label for="LogsHost">Host:</label>
+            <input id="LogsHost" name="logsHost">
+
+            <label for="LogsPort">Port:</label>
+            <input id="LogsPort" name="logsPort">
+        </p>
+        <button type="submit">Save</button>
+    </form>
+</div>
 <script>
     // test-data-start
     const currentData = {
-        ledValue: 2,
+        "ledValue": 3,
+        "photoValue": 341,
+        "co2": {"status": 0, "value": 1135},
+        "bme": {"pressure": 97773.60156, "temperature": 27.42000008, "humidity": 52},
+        "time": {"iso": "2023-07-02T01:11:14"},
+        "logs": {enabled: true, host: "my.local", port: 8000},
     };
     // test-data-end
-    const {ledValue} = currentData;
+    const {
+        ledValue,
+        co2: {status: co2Status, value: co2Value},
+        bme: {pressure, temperature, humidity},
+        time: {iso: isoTime},
+        logs: {enabled: logsEnabled, host: logsHost, port: logsPort},
+    } = currentData;
+    $('#co2Status').text(co2Status);
+    $('#co2Value').text(co2Value);
+    $('#pressure').text(pressure.toFixed(2));
+    $('#temperature').text(temperature.toFixed(1));
+    $('#humidity').text(humidity);
+    $('#time').text(isoTime);
+
     $(`#LedValue option[value="${ledValue}"]`).prop('selected', true);
+    $("#LogsEnabled").prop('checked', logsEnabled);
+    $("#LogsHost").val(logsHost);
+    $("#LogsPort").val(logsPort);
 </script>
 </body>
 </html>

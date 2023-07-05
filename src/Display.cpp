@@ -1,9 +1,10 @@
+#include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
-#include "ConfigWTF.h"
+#include "Config.h"
 
-#include "Display1.h"
+#include "Display.h"
 
-LiquidCrystal_I2C lcd(LCD_ADDRESS, I2C_A, I2C_B);
+LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);
 
 // carts
 uint8_t row8[8] = {0b11111,  0b11111,  0b11111,  0b11111,  0b11111,  0b11111,  0b11111,  0b11111};
@@ -40,6 +41,7 @@ void lcdLoadClock() {
 void setupLCD() {
     lcd.init();
     lcd.backlight();
+    lcd.clear();
     lcdLoadClock();
 }
 
