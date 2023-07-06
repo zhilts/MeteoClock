@@ -1,10 +1,5 @@
 #include <WiFi.h>
-
-#if __has_include("Secrets.h")
-    #include "Secrets.h"
-#else
-    #include "ConfigWTF.h"
-#endif
+#include "Secrets.h"
 #include "Config.h"
 #include "WiFiConnection.h"
 #include "Log.h"

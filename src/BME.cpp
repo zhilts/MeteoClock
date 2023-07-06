@@ -10,15 +10,11 @@
 Adafruit_BME280 bme;
 
 void setupBME() {
-#if (DEBUG == 1)
     rgbSetValue(RGB_COLOR_BLUE);
     lcdSetCursor(0, 2);
     lcdPrint(F("BME280... "));
-    delay(50);
-#endif
     log("Starting BME at " + String(BME280_ADDRESS));
     bool status = bme.begin(BME280_ADDRESS, &Wire);
-#if (DEBUG == 1)
     if (status) {
         lcdPrint(F("OK"));
         log(F("BME280: OK"));
@@ -27,7 +23,6 @@ void setupBME() {
         log(F("BME280: ERROR"));
         return;
     }
-#endif
 
     bme.setSampling(Adafruit_BME280::MODE_FORCED,
                     Adafruit_BME280::SAMPLING_X1, // temperature

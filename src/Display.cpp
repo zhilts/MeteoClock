@@ -55,6 +55,10 @@ void lcdPrint(String text) {
     lcd.print(text);
 }
 
+void lcdWrite(int code) {
+    lcd.write(code);
+}
+
 void lcdClear() {
     lcd.clear();
 }

@@ -4,8 +4,11 @@
 #include <Arduino.h>
 
 void setupCO2();
+
 byte getCO2Status();
+
 int getCO2();
+
 String getCO2DebugSting();
 
 enum CO2_LEVEL {

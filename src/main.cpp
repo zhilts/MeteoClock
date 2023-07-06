@@ -15,6 +15,12 @@
 #include "Button.h"
 #include "Functions.h"
 
+#include <GyverTimer.h>
+
+GTimer_ms sensorsTimer(SENS_TIME);
+GTimer_ms clockTimer(500);
+GTimer_ms debugTimer(2000);
+
 void setup() {
     setupLog();
     connectWifi();
@@ -26,10 +32,12 @@ void setup() {
     setupCO2();
     setupRTC();
     setupBME();
+    delay(500);
+    lcdClear();
 }
 
 void debugLoop() {
-#if (DEBUG != 1)
+#if (!DEBUG)
     return;
 #endif
     log("----- DEBUG ------");
@@ -39,12 +47,12 @@ void debugLoop() {
     log("Time: " + getNowISO());
     log("BME: " + bmeGetDebugString());
     log("Logs: " + getHttpLogsHost() + ":" + getHttpLogsPort());
-    delay(1000);
 }
 
 void loop() {
     otaHandle();
     serverHandle();
-    debugLoop();
-    updateCO2();
+    if (debugTimer.isReady()) debugLoop();
+    if (sensorsTimer.isReady()) readSensors();
+    if (clockTimer.isReady()) clockTick();
 }

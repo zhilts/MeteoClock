@@ -1,7 +1,7 @@
 #ifndef METEO_CLOCK_CONFIG_H
 #define METEO_CLOCK_CONFIG_H
 
-#define DEBUG 1
+#define DEBUG false
 #define RESET_CLOCK true
 
 #define TOUCH_PIN 15
@@ -24,5 +24,6 @@
 #define PHOTO 32
 
 #define SENS_TIME 30000
+#define DISP_MODE 2       // upper right corner: 0 - year, 1 - day of the week, 2 - seconds
 
 #endif //METEO_CLOCK_CONFIG_H

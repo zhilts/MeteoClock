@@ -10,13 +10,10 @@
 RTC_DS3231 rtc;
 
 void setupRTC() {
-#if (DEBUG == 1)
     rgbSetValue(RGB_COLOR_GREEN);
     lcdSetCursor(0, 1);
     lcdPrint(F("RTC... "));
-#endif
     bool status = rtc.begin();
-#if (DEBUG == 1)
     if (status) {
         lcdPrint(F("OK"));
         log(F("RTC: OK"));
@@ -24,7 +21,6 @@ void setupRTC() {
         lcdPrint(F("ERROR"));
         log(F("RTC: ERROR"));
     }
-#endif
     if (RESET_CLOCK || rtc.lostPower()) {
         rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
         log("Adjust time: " + String(F(__DATE__)) + "-" + String(F(__TIME__)));
