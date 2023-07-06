@@ -6,6 +6,6 @@
 #define METEO_CLOCK_FUNCTIONS_H
 
 void readSensors();
-void clockTick();
+void timerTick();
 
 #endif //METEO_CLOCK_FUNCTIONS_H

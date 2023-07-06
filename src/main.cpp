@@ -34,6 +34,7 @@ void setup() {
     setupBME();
     delay(500);
     lcdClear();
+    readSensors();
 }
 
 void debugLoop() {
@@ -54,5 +55,5 @@ void loop() {
     serverHandle();
     if (debugTimer.isReady()) debugLoop();
     if (sensorsTimer.isReady()) readSensors();
-    if (clockTimer.isReady()) clockTick();
+    if (clockTimer.isReady()) timerTick();
 }

@@ -8,9 +8,12 @@
 #include "RTCTime.h"
 #include "Display.h"
 
-void updateCO2() {
-    CO2_LEVEL co2Level = getCO2Level();
-    switch (co2Level) {
+struct {
+    CO2_LEVEL co2Level;
+} AllSensors;
+
+void updateCO2Led(bool tick) {
+    switch (AllSensors.co2Level) {
         case CO2_LEVEL_GOOD:
             rgbSetValue(RGB_COLOR_GREEN);
             break;
@@ -18,7 +21,7 @@ void updateCO2() {
             rgbSetValue(RGB_COLOR_YELLOW);
             break;
         case CO2_LEVEL_ALERT:
-            rgbSetValue(RGB_COLOR_RED);
+            rgbSetValue(tick ? RGB_COLOR_RED : RGB_COLOR_OFF);
             break;
     }
 }
@@ -33,34 +36,41 @@ void drawdots(byte x, byte y, boolean state) {
     lcdWrite(code);
 }
 
-boolean dotFlag = false;
 uint8_t lastHour = 0;
 uint8_t lastMin = -1;
 uint8_t lastSec = -1;
 
-void clockTick() {
-    METEO_MODE mode = getMeteoMode();
+void updateClock(bool dotFlag) {
     DateTime now = getNow();
-    dotFlag = !dotFlag;
     uint8_t hrs = now.hour();
     uint8_t mins = now.minute();
     uint8_t secs = now.second();
     if (lastHour != hrs || lastMin != mins) {
-        if (mode == METEO_MODE_CLOCK) lcdDrawClock(hrs, mins, 0, 0);
+        lcdDrawClock(hrs, mins, 0, 0);
     }
-    if (DISP_MODE == 2 && mode == METEO_MODE_CLOCK && lastSec != secs) {
+    if (DISP_MODE == 2 && lastSec != secs) {
         lcdSetCursor(16, 1);
         if (secs < 10) lcdPrint("0");
         lcdPrint(String(secs));
     }
-    if (mode == METEO_MODE_CLOCK) drawdots(7, 0, dotFlag);
+
+    drawdots(7, 0, dotFlag);
 
     lastHour = hrs;
     lastMin = mins;
     lastSec = secs;
-    // todo: blink on red
+}
+
+boolean timerTickState = false;
+void timerTick() {
+    timerTickState = !timerTickState;
+    METEO_MODE mode = getMeteoMode();
+    if (mode == METEO_MODE_CLOCK) {
+        updateClock(timerTickState);
+    }
+    updateCO2Led(timerTickState);
 }
 
 void readSensors() {
-    updateCO2();
+    AllSensors.co2Level = getCO2Level();
 }
