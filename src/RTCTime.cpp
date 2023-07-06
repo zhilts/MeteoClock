@@ -41,3 +41,9 @@ String dateTimeToISO8601(const DateTime &dt) {
 String getNowISO() {
     return dateTimeToISO8601(getNow());
 }
+
+void setEpochTime(unsigned long long  epochtime) {
+    uint32_t epochtimeSeconds = static_cast<uint32_t>(epochtime / 1000);
+    log("epochtimeSeconds: " + String(epochtimeSeconds));
+    rtc.adjust(DateTime(epochtimeSeconds));
+}

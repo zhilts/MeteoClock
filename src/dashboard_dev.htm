@@ -20,8 +20,9 @@
         Pressure: <span id="pressure"></span> Pa; Temperature: <span id="temperature"></span>°C; Humidity: <span
             id="humidity"></span>%
     </p>
-    <p>
+    <p style="display: flex; align-items: center; gap: 20px">
         Time: <span id="time"></span>
+        <button type="button" onclick="postTime()">Set current</button>
     </p>
 </div>
 <div class="section">
@@ -83,6 +84,23 @@
     $("#LogsEnabled").prop('checked', logsEnabled);
     $("#LogsHost").val(logsHost);
     $("#LogsPort").val(logsPort);
+</script>
+<script>
+    async function postTime() {
+        const rawEpochTime = Date.now().valueOf();
+        const timezoneOffset = new Date().getTimezoneOffset();
+        const timezoneOffsetMs = timezoneOffset * 60 * 1000;
+        const adjustedEpochTime = rawEpochTime - timezoneOffsetMs;
+        const body = new URLSearchParams();
+        body.append('datetime', adjustedEpochTime);
+        const response = await fetch('/datetime', {
+            method: 'POST',
+            body
+        });
+        if (response.ok) {
+            window.location.href = response.url;
+        }
+    }
 </script>
 </body>
 </html>

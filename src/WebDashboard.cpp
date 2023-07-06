@@ -34,8 +34,9 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "        Pressure: <span id=\"pressure\"></span> Pa; Temperature: <span id=\"temperature\"></span>°C; Humidity: <span\n"
                          "            id=\"humidity\"></span>%\n"
                          "    </p>\n"
-                         "    <p>\n"
+                         "    <p style=\"display: flex; align-items: center; gap: 20px\">\n"
                          "        Time: <span id=\"time\"></span>\n"
+                         "        <button type=\"button\" onclick=\"postTime()\">Set current</button>\n"
                          "    </p>\n"
                          "</div>\n"
                          "<div class=\"section\">\n"
@@ -87,6 +88,23 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "    $(\"#LogsEnabled\").prop('checked', logsEnabled);\n"
                          "    $(\"#LogsHost\").val(logsHost);\n"
                          "    $(\"#LogsPort\").val(logsPort);\n"
+                         "</script>\n"
+                         "<script>\n"
+                         "    async function postTime() {\n"
+                         "        const rawEpochTime = Date.now().valueOf();\n"
+                         "        const timezoneOffset = new Date().getTimezoneOffset();\n"
+                         "        const timezoneOffsetMs = timezoneOffset * 60 * 1000;\n"
+                         "        const adjustedEpochTime = rawEpochTime - timezoneOffsetMs;\n"
+                         "        const body = new URLSearchParams();\n"
+                         "        body.append('datetime', adjustedEpochTime);\n"
+                         "        const response = await fetch('/datetime', {\n"
+                         "            method: 'POST',\n"
+                         "            body\n"
+                         "        });\n"
+                         "        if (response.ok) {\n"
+                         "            window.location.href = response.url;\n"
+                         "        }\n"
+                         "    }\n"
                          "</script>\n"
                          "</body>\n"
                          "</html>";
@@ -159,13 +177,22 @@ void httpUpdate() {
     setHttpLogsPort(logsPort);
 
     server.sendHeader("Location", "/");
-    server.send(302, "text/plain", "go back");
+    server.send(302, "text/plain", "Refresh");
+}
+
+void httpSetDatetime() {
+    String datetimeStr = server.arg("datetime");
+    unsigned long long  datetime = atoll(datetimeStr.c_str());
+    setEpochTime(datetime);
+    server.sendHeader("Location", "/");
+    server.send(302, "text/plain", "Refresh");
 }
 
 void setupServer() {
     MDNS.addService("http", "tcp", 80);
     server.on("/", httpDashboard);
     server.on("/update", HTTP_POST, httpUpdate);
+    server.on("/datetime", HTTP_POST, httpSetDatetime);
     server.begin();
 }
 
