@@ -23,4 +23,6 @@
 
 #define PHOTO 32
 
+#define SENS_TIME 30000
+
 #endif //METEO_CLOCK_CONFIG_H

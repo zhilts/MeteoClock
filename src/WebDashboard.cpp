@@ -100,22 +100,21 @@ DynamicJsonDocument getCO2Json() {
 
 DynamicJsonDocument getBMEJson() {
     DynamicJsonDocument jsonDoc(256);
-    jsonDoc["pressure"] = getPressure();
-    jsonDoc["temperature"] = getTemperature();
-    jsonDoc["humidity"] = getHumidity();
+    BMEValue value = getBMEValue();
+    jsonDoc["pressure"] = value.pressure;
+    jsonDoc["temperature"] = value.temperature;
+    jsonDoc["humidity"] = value.humidity;
     return jsonDoc;
 }
 
 DynamicJsonDocument getTimeJson() {
     DynamicJsonDocument jsonDoc(256);
-//    jsonDoc["now"] = getNow();
     jsonDoc["iso"] = getNowISO();
     return jsonDoc;
 }
 
 DynamicJsonDocument getLogsJson() {
     DynamicJsonDocument jsonDoc(256);
-//    jsonDoc["now"] = getNow();
     jsonDoc["enabled"] = getHttpLogsEnabled();
     jsonDoc["host"] = getHttpLogsHost();
     jsonDoc["port"] = getHttpLogsPort();

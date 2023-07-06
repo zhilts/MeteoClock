@@ -9,9 +9,6 @@
 
 Adafruit_BME280 bme;
 
-uint32_t pressure_array[6];
-byte time_array[6];
-
 void setupBME() {
 #if (DEBUG == 1)
     rgbSetValue(RGB_COLOR_BLUE);
@@ -37,30 +34,35 @@ void setupBME() {
                     Adafruit_BME280::SAMPLING_X1, // pressure
                     Adafruit_BME280::SAMPLING_X1, // humidity
                     Adafruit_BME280::FILTER_OFF);
-
-    bme.takeForcedMeasurement();
-    uint32_t Pressure = bme.readPressure();
-    for (byte i = 0; i < 6; i++) {
-        pressure_array[i] = Pressure;
-        time_array[i] = i;
-    }
 }
 
-float getPressure() {
+BMEValue getBMEValue() {
     bme.takeForcedMeasurement();
-    return bme.readPressure();
+    BMEValue result;
+    result.pressure = bme.readPressure();
+    result.temperature = bme.readTemperature();
+    result.humidity = bme.readHumidity();
+    return result;
 }
 
-float getTemperature() {
-    bme.takeForcedMeasurement();
-    return bme.readTemperature();
-}
-
-byte getHumidity() {
-    bme.takeForcedMeasurement();
-    return bme.readHumidity();
-}
+//void readBMEValues() {
+//    bme.takeForcedMeasurement();
+//}
+//
+//float getPressure() {
+//    return bme.readPressure();
+//}
+//
+//float getTemperature() {
+//    return bme.readTemperature();
+//}
+//
+//byte getHumidity() {
+//    return bme.readHumidity();
+//}
 
 String bmeGetDebugString() {
-    return "Pressure: " + String(getPressure()) + " Temp: " + String(getTemperature()) + " Hum: " + String(getHumidity());
+    BMEValue value = getBMEValue();
+    return "Pressure: " + String(value.pressure) + " Temp: " + String(value.temperature) + " Hum: " +
+           String(value.humidity);
 }
