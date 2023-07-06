@@ -12,7 +12,7 @@ HardwareSerial mySerial(2);
 
 void setupCO2() {
 #if (DEBUG == 1)
-    rgbSetValue(1);
+    rgbSetValue(RGB_COLOR_RED);
     lcdSetCursor(0, 0);
     lcdPrint(F("MHZ-19... "));
 #endif

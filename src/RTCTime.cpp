@@ -11,7 +11,7 @@ RTC_DS3231 rtc;
 
 void setupRTC() {
 #if (DEBUG == 1)
-    rgbSetValue(2);
+    rgbSetValue(RGB_COLOR_GREEN);
     lcdSetCursor(0, 1);
     lcdPrint(F("RTC... "));
 #endif

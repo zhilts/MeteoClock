@@ -11,31 +11,31 @@ int LED_ON = 0;
 int LED_OFF = 255;
 #endif
 
-int currentValue = -1;
+RGB_COLOR currentValue;
 
-void rgbSetValue(int color) {
+void rgbSetValue(RGB_COLOR color) {
     switch (color) {
-        case RGB_OFF:
+        case RGB_COLOR_OFF:
             analogWrite(LED_R, LED_OFF);
             analogWrite(LED_G, LED_OFF);
             analogWrite(LED_B, LED_OFF);
             break;
-        case RGB_RED:
+        case RGB_COLOR_RED:
             analogWrite(LED_R, LED_ON);
             analogWrite(LED_G, LED_OFF);
             analogWrite(LED_B, LED_OFF);
             break;
-        case RGB_GREEN:
+        case RGB_COLOR_GREEN:
             analogWrite(LED_R, LED_OFF);
             analogWrite(LED_G, LED_ON);
             analogWrite(LED_B, LED_OFF);
             break;
-        case RGB_BLUE:
+        case RGB_COLOR_BLUE:
             analogWrite(LED_R, LED_OFF);
             analogWrite(LED_G, LED_OFF);
             analogWrite(LED_B, LED_ON);
             break;
-        case RGB_YELLOW:
+        case RGB_COLOR_YELLOW:
             analogWrite(LED_R, LED_ON);
             analogWrite(LED_G, LED_ON);
             analogWrite(LED_B, LED_OFF);
@@ -44,7 +44,7 @@ void rgbSetValue(int color) {
     currentValue = color;
 }
 
-int rgbGetValue() {
+RGB_COLOR rgbGetValue() {
     return currentValue;
 }
 
@@ -58,5 +58,5 @@ void setupRGB() {
 #else
     analogWrite(LED_COM, 255);
 #endif
-    rgbSetValue(RGB_OFF);
+    rgbSetValue(RGB_COLOR_OFF);
 }

@@ -1,14 +1,16 @@
 #ifndef METEO_CLOCK_LED_H
 #define METEO_CLOCK_LED_H
 
-const int RGB_OFF = 0;
-const int RGB_RED = 1;
-const int RGB_GREEN = 2;
-const int RGB_BLUE = 3;
-const int RGB_YELLOW = 4;
+enum RGB_COLOR {
+    RGB_COLOR_OFF = 0,
+    RGB_COLOR_RED = 1,
+    RGB_COLOR_GREEN = 2,
+    RGB_COLOR_BLUE = 3,
+    RGB_COLOR_YELLOW = 4,
+};
 
 void setupRGB();
-int rgbGetValue();
-void rgbSetValue(int color);
+RGB_COLOR rgbGetValue();
+void rgbSetValue(RGB_COLOR color);
 
 #endif //METEO_CLOCK_LED_H

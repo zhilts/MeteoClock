@@ -14,7 +14,7 @@ byte time_array[6];
 
 void setupBME() {
 #if (DEBUG == 1)
-    rgbSetValue(3);
+    rgbSetValue(RGB_COLOR_BLUE);
     lcdSetCursor(0, 2);
     lcdPrint(F("BME280... "));
     delay(50);

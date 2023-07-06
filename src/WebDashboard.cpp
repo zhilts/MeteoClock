@@ -141,7 +141,7 @@ void httpDashboard() {
 }
 
 void httpUpdate() {
-    int ledValue = server.arg("ledValue").toInt();
+    auto ledValue = static_cast<RGB_COLOR>(server.arg("ledValue").toInt());
     rgbSetValue(ledValue);
 
     String lcdText = server.arg("lcdText");
