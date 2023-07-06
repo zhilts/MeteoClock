@@ -47,14 +47,17 @@ void setupBME() {
 }
 
 float getPressure() {
+    bme.takeForcedMeasurement();
     return bme.readPressure();
 }
 
 float getTemperature() {
+    bme.takeForcedMeasurement();
     return bme.readTemperature();
 }
 
 byte getHumidity() {
+    bme.takeForcedMeasurement();
     return bme.readHumidity();
 }
 
