@@ -93,7 +93,7 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
 
 DynamicJsonDocument getCO2Json() {
     DynamicJsonDocument jsonDoc(256);
-    jsonDoc["status"] = getCo2Status();
+    jsonDoc["status"] = getCO2Status();
     jsonDoc["value"] = getCO2();
     return jsonDoc;
 }

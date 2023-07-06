@@ -13,6 +13,7 @@
 #include "BME.h"
 #include "CO2.h"
 #include "Button.h"
+#include "Functions.h"
 
 void setup() {
     setupLog();
@@ -34,7 +35,7 @@ void debugLoop() {
     log("----- DEBUG ------");
     log("Photo: " + String(getBrightness()));
     log("Button: " + String(buttonGetValue()));
-    log("CO2: " + getCo2DebugSting());
+    log("CO2: " + getCO2DebugSting());
     log("Time: " + getNowISO());
     log("BME: " + bmeGetDebugString());
     log("Logs: " + getHttpLogsHost() + ":" + getHttpLogsPort());
@@ -45,4 +46,5 @@ void loop() {
     otaHandle();
     serverHandle();
     debugLoop();
+    updateCO2();
 }
