@@ -5,7 +5,7 @@
 #ifndef METEO_CLOCK_FUNCTIONS_H
 #define METEO_CLOCK_FUNCTIONS_H
 
-void readSensors();
+void updateSensors();
 void timerTick();
 
 #endif //METEO_CLOCK_FUNCTIONS_H

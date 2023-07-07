@@ -10,6 +10,10 @@
 
 struct {
     CO2_LEVEL co2Level;
+    int co2Value;
+    float pressure;
+    float temperature;
+    byte humidity;
 } AllSensors;
 
 static const char *dayNames[] = {
@@ -46,7 +50,7 @@ void drawdots(byte x, byte y, boolean state) {
     lcdWrite(code);
 }
 
-uint8_t lastHour = 0;
+uint8_t lastHour = -1;
 uint8_t lastMin = -1;
 uint8_t lastSec = -1;
 
@@ -105,6 +109,32 @@ void timerTick() {
     updateCO2Led(timerTickState);
 }
 
-void readSensors() {
+void drawSensors() {
+    lcdSetCursor(0, 2);
+    lcdPrint(String(AllSensors.temperature, 1));
+    lcdWrite(223);
+    lcdSetCursor(6, 2);
+    lcdPrint(" " + String(AllSensors.humidity) + "%  ");
+
+    if (AllSensors.co2Value < 1000) lcdPrint(" ");
+    lcdPrint(String(AllSensors.co2Value) + " ppm");
+
+    lcdSetCursor(0, 3);
+    lcdPrint(String((int)AllSensors.pressure) + " mm  rain ");
+    lcdPrint(F("       "));
+    lcdSetCursor(13, 3);
+//    lcdPrint(String(dispRain) + "%");
+    lcdPrint("50 %");
+}
+
+void updateSensors() {
     AllSensors.co2Level = getCO2Level();
+    AllSensors.co2Value = getCO2();
+    BMEValue bmeValue = getBMEValue();
+    AllSensors.pressure = convertPressure(bmeValue.pressure, PRESSURE_UNIT_MM);
+    AllSensors.temperature = bmeValue.temperature;
+    AllSensors.humidity = bmeValue.humidity;
+
+    METEO_MODE mode = getMeteoMode();
+    if (mode == METEO_MODE_CLOCK) drawSensors();
 }

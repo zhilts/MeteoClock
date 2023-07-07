@@ -40,21 +40,14 @@ BMEValue getBMEValue() {
     return result;
 }
 
-//void readBMEValues() {
-//    bme.takeForcedMeasurement();
-//}
-//
-//float getPressure() {
-//    return bme.readPressure();
-//}
-//
-//float getTemperature() {
-//    return bme.readTemperature();
-//}
-//
-//byte getHumidity() {
-//    return bme.readHumidity();
-//}
+float convertPressure(float value, PressureUnit unit) {
+    switch (unit) {
+        case PRESSURE_UNIT_PA:
+            return value;
+        case PRESSURE_UNIT_MM:
+            return value *  0.00750062;
+    }
+}
 
 String bmeGetDebugString() {
     BMEValue value = getBMEValue();
