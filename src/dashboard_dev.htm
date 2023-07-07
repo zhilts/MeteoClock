@@ -5,13 +5,11 @@
     <title>Meteo clock setup</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <style>
-        .section {
-        }
-    </style>
+    <link href="//cdn.muicss.com/mui-0.10.3/css/mui.min.css" rel="stylesheet" type="text/css"/>
+    <script src="//cdn.muicss.com/mui-0.10.3/js/mui.min.js"></script>
 </head>
-<body>
-<div class="section">
+<body class="mui-container">
+<div class="mui-panel">
     <h2>Status</h2>
     <p>
         CO2: <span id="co2Value"></span> ppm; Status: <span id="co2Status"></span>
@@ -22,10 +20,10 @@
     </p>
     <p style="display: flex; align-items: center; gap: 20px">
         Time: <span id="time"></span>
-        <button type="button" onclick="postTime()">Set current</button>
+        <button type="button" class="mui-btn mui-btn--primary" onclick="postTime()">Set current</button>
     </p>
 </div>
-<div class="section">
+<div class="mui-panel">
     <h2>Update</h2>
     <form action="/update" method="POST">
         <p>
@@ -52,7 +50,7 @@
             <label for="LogsPort">Port:</label>
             <input id="LogsPort" name="logsPort">
         </p>
-        <button type="submit">Save</button>
+        <button type="submit" class="mui-btn mui-btn--primary">Save</button>
     </form>
 </div>
 <script>
