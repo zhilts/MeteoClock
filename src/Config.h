@@ -23,6 +23,6 @@
 #define PHOTO 32
 
 #define SENS_TIME 30000   // sensor update frequency ms
-#define DISP_MODE 2       // upper right corner: 0 - year, 1 - day of the week, 2 - seconds
+#define DISP_MODE 1       // upper right corner: 0 - year, 1 - day of the week, 2 - seconds
 
 #endif //METEO_CLOCK_CONFIG_H
