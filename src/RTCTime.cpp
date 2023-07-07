@@ -21,10 +21,6 @@ void setupRTC() {
         lcdPrint(F("ERROR"));
         log(F("RTC: ERROR"));
     }
-    if (RESET_CLOCK || rtc.lostPower()) {
-        rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-        log("Adjust time: " + String(F(__DATE__)) + "-" + String(F(__TIME__)));
-    }
 }
 
 DateTime getNow() {

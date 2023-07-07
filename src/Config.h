@@ -2,7 +2,6 @@
 #define METEO_CLOCK_CONFIG_H
 
 #define DEBUG false
-#define RESET_CLOCK true
 
 #define TOUCH_PIN 15
 
