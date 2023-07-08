@@ -24,7 +24,7 @@ METEO_MODE getMeteoMode() {
 }
 
 void setMeteoMode(METEO_MODE mode) {
-    currentMode = static_cast<METEO_MODE>(mode % 9);
+    currentMode = static_cast<METEO_MODE>(mode % METE_MODE_LENGTH);
     log("[Button] Set mode: " + String(currentMode));
 }
 

@@ -18,6 +18,9 @@
         Pressure: <span id="pressure"></span> Pa; Temperature: <span id="temperature"></span>°C; Humidity: <span
             id="humidity"></span>%
     </p>
+    <p>
+        Rain: <span id="rain"></span>%
+    </p>
     <p style="display: flex; align-items: center; gap: 20px">
         Time: <span id="time"></span>
         <button type="button" class="mui-btn mui-btn--primary" onclick="postTime()">Set current</button>
@@ -48,6 +51,8 @@
                 <option value="6">Pressure daily</option>
                 <option value="7">CO2 hourly</option>
                 <option value="8">CO2 daily</option>
+                <option value="9">Rain hourly</option>
+                <option value="10">Rain daily</option>
             </select>
         </p>
         <p>
@@ -76,6 +81,7 @@
         "co2": {"status": 0, "value": 1135},
         "bme": {"pressure": 97773.60156, "temperature": 27.42000008, "humidity": 52},
         "time": {"iso": "2023-07-02T01:11:14"},
+        "rain": 30,
         "logs": {enabled: true, host: "my.local", port: 8000},
     };
     // test-data-end
@@ -85,6 +91,7 @@
         co2: {status: co2Status, value: co2Value},
         bme: {pressure, temperature, humidity},
         time: {iso: isoTime},
+        rain,
         logs: {enabled: logsEnabled, host: logsHost, port: logsPort},
     } = currentData;
     $('#co2Status').text(co2Status);
@@ -93,6 +100,7 @@
     $('#temperature').text(temperature.toFixed(1));
     $('#humidity').text(humidity);
     $('#time').text(isoTime);
+    $('#rain').text(rain);
 
     $(`#LedValue option[value="${ledValue}"]`).prop('selected', true);
     $(`#ModeValue option[value="${modeValue}"]`).prop('selected', true);

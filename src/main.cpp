@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <GyverTimer.h>
 
 #include "Config.h"
 
@@ -14,12 +15,13 @@
 #include "CO2.h"
 #include "Button.h"
 #include "Functions.h"
+#include "Rain.h"
 
-#include <GyverTimer.h>
 
 GTimer_ms sensorsTimer(SENS_TIME);
 GTimer_ms clockTimer(500);
 GTimer_ms debugTimer(2000);
+GTimer_ms rainPredictTimer((long) 10 * 60 * 1000);         // 10 minutes
 
 void setup() {
     setupLog();
@@ -32,6 +34,7 @@ void setup() {
     setupCO2();
     setupRTC();
     setupBME();
+    setupRain();
     delay(500);
     lcdClear();
     updateSensors();
@@ -53,8 +56,9 @@ void debugLoop() {
 void loop() {
     otaHandle();
     serverHandle();
+    buttonTick();
+    if (rainPredictTimer.isReady()) rainTick();
     if (debugTimer.isReady()) debugLoop();
     if (sensorsTimer.isReady()) updateSensors();
     if (clockTimer.isReady()) timerTick();
-    buttonTick();
 }

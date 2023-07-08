@@ -9,6 +9,7 @@ struct AllSensors {
     float pressure = 0;
     float temperature = 0;
     byte humidity = 0;
+    int rain = 0;
 };
 
 #endif //METEO_CLOCK_DATA_H

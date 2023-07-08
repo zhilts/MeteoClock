@@ -2,7 +2,10 @@
 #define METEO_CLOCK_BUTTON_H
 
 void setupButton();
+
 int buttonGetValue();
+
+#define METE_MODE_LENGTH 11
 
 enum METEO_MODE {
     METEO_MODE_CLOCK = 0,
@@ -14,6 +17,8 @@ enum METEO_MODE {
     METEO_MODE_PRESS_DAILY = 6,
     METEO_MODE_CO2_HOURLY = 7,
     METEO_MODE_CO2_DAILY = 8,
+    METEO_MODE_RAIN_HOURLY = 9,
+    METEO_MODE_RAIN_DAILY = 10,
 };
 
 METEO_MODE getMeteoMode();

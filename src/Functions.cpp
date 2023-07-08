@@ -10,6 +10,7 @@
 #include "Display.h"
 #include "Plot.h"
 #include "Data.h"
+#include "Rain.h"
 
 AllSensors CurrentSensors;
 
@@ -135,8 +136,7 @@ void drawSensors() {
     lcdPrint(String((int) CurrentSensors.pressure) + " mm  rain ");
     lcdPrint(F("       "));
     lcdSetCursor(13, 3);
-//    lcdPrint(String(dispRain) + "%");
-    lcdPrint("50 %");
+    lcdPrint(String(CurrentSensors.rain) + "%");
 }
 
 boolean timerTickState = false;
@@ -172,6 +172,7 @@ void updateSensors() {
     newValues.pressure = convertPressure(bmeValue.pressure, PRESSURE_UNIT_MM);
     newValues.temperature = bmeValue.temperature;
     newValues.humidity = bmeValue.humidity;
+    newValues.rain = getRainValue();
 
     copyStructure(newValues, CurrentSensors);
 

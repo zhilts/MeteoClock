@@ -102,6 +102,18 @@ void redrawPlot(METEO_MODE mode, AllSensors *hourly, AllSensors *daily) {
             }
             drawPlot(0, 3, 15, 4, CO2_MIN, CO2_MAX, (int *) values, "c day");
             break;
+        case METEO_MODE_RAIN_HOURLY:
+            for (size_t i = 0; i < HISTORY_LENGTH; ++i) {
+                values[i] = hourly[i].rain;
+            }
+            drawPlot(0, 3, 15, 4, CO2_MIN, CO2_MAX, (int *) values, "r hr");
+            break;
+        case METEO_MODE_RAIN_DAILY:
+            for (size_t i = 0; i < HISTORY_LENGTH; ++i) {
+                values[i] = daily[i].rain;
+            }
+            drawPlot(0, 3, 15, 4, CO2_MIN, CO2_MAX, (int *) values, "r day");
+            break;
         case METEO_MODE_CLOCK:
             break;
     }

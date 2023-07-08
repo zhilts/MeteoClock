@@ -10,6 +10,7 @@
 #include "CO2.h"
 #include "BME.h"
 #include "Button.h"
+#include "Rain.h"
 
 WebServer server(80);
 
@@ -32,6 +33,9 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "    <p>\n"
                          "        Pressure: <span id=\"pressure\"></span> Pa; Temperature: <span id=\"temperature\"></span>°C; Humidity: <span\n"
                          "            id=\"humidity\"></span>%\n"
+                         "    </p>\n"
+                         "    <p>\n"
+                         "        Rain: <span id=\"rain\"></span>%\n"
                          "    </p>\n"
                          "    <p style=\"display: flex; align-items: center; gap: 20px\">\n"
                          "        Time: <span id=\"time\"></span>\n"
@@ -63,6 +67,8 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "                <option value=\"6\">Pressure daily</option>\n"
                          "                <option value=\"7\">CO2 hourly</option>\n"
                          "                <option value=\"8\">CO2 daily</option>\n"
+                         "                <option value=\"9\">Rain hourly</option>\n"
+                         "                <option value=\"10\">Rain daily</option>\n"
                          "            </select>\n"
                          "        </p>\n"
                          "        <p>\n"
@@ -89,6 +95,7 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "        co2: {status: co2Status, value: co2Value},\n"
                          "        bme: {pressure, temperature, humidity},\n"
                          "        time: {iso: isoTime},\n"
+                         "        rain,\n"
                          "        logs: {enabled: logsEnabled, host: logsHost, port: logsPort},\n"
                          "    } = currentData;\n"
                          "    $('#co2Status').text(co2Status);\n"
@@ -97,6 +104,7 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "    $('#temperature').text(temperature.toFixed(1));\n"
                          "    $('#humidity').text(humidity);\n"
                          "    $('#time').text(isoTime);\n"
+                         "    $('#rain').text(rain);\n"
                          "\n"
                          "    $(`#LedValue option[value=\"${ledValue}\"]`).prop('selected', true);\n"
                          "    $(`#ModeValue option[value=\"${modeValue}\"]`).prop('selected', true);\n"
@@ -163,6 +171,7 @@ void httpDashboard() {
     jsonDoc["co2"] = getCO2Json();
     jsonDoc["bme"] = getBMEJson();
     jsonDoc["time"] = getTimeJson();
+    jsonDoc["rain"] = getRainValue();
     jsonDoc["logs"] = getLogsJson();
 
     String jsonString;
