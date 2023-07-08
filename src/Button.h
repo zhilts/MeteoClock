@@ -18,4 +18,8 @@ enum METEO_MODE {
 
 METEO_MODE getMeteoMode();
 
+void setMeteoMode(METEO_MODE mode);
+
+void buttonTick();
+
 #endif //METEO_CLOCK_BUTTON_H

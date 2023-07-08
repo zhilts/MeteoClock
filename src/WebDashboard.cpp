@@ -9,6 +9,7 @@
 #include "Photo.h"
 #include "CO2.h"
 #include "BME.h"
+#include "Button.h"
 
 WebServer server(80);
 
@@ -51,6 +52,20 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "            </select>\n"
                          "        </p>\n"
                          "        <p>\n"
+                         "            <label for=\"ModeValue\">Mode:</label>\n"
+                         "            <select id=\"ModeValue\" name=\"modeValue\">\n"
+                         "                <option value=\"0\">Clock</option>\n"
+                         "                <option value=\"1\">Temperature hourly</option>\n"
+                         "                <option value=\"2\">Temperature daily</option>\n"
+                         "                <option value=\"3\">Humidity hourly</option>\n"
+                         "                <option value=\"4\">Humidity daily</option>\n"
+                         "                <option value=\"5\">Pressure hourly</option>\n"
+                         "                <option value=\"6\">Pressure daily</option>\n"
+                         "                <option value=\"7\">CO2 hourly</option>\n"
+                         "                <option value=\"8\">CO2 daily</option>\n"
+                         "            </select>\n"
+                         "        </p>\n"
+                         "        <p>\n"
                          "            <label for=\"LcdText\">LCD Text:</label>\n"
                          "            <input id=\"LcdText\" name=\"lcdText\"/>\n"
                          "        </p>\n"
@@ -70,6 +85,7 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "<script>\n"
                          "    const {\n"
                          "        ledValue,\n"
+                         "        modeValue,\n"
                          "        co2: {status: co2Status, value: co2Value},\n"
                          "        bme: {pressure, temperature, humidity},\n"
                          "        time: {iso: isoTime},\n"
@@ -83,6 +99,7 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "    $('#time').text(isoTime);\n"
                          "\n"
                          "    $(`#LedValue option[value=\"${ledValue}\"]`).prop('selected', true);\n"
+                         "    $(`#ModeValue option[value=\"${modeValue}\"]`).prop('selected', true);\n"
                          "    $(\"#LogsEnabled\").prop('checked', logsEnabled);\n"
                          "    $(\"#LogsHost\").val(logsHost);\n"
                          "    $(\"#LogsPort\").val(logsPort);\n"
@@ -141,6 +158,7 @@ void httpDashboard() {
     DynamicJsonDocument jsonDoc(512);
 
     jsonDoc["ledValue"] = rgbGetValue();
+    jsonDoc["modeValue"] = getMeteoMode();
     jsonDoc["photoValue"] = getBrightness();
     jsonDoc["co2"] = getCO2Json();
     jsonDoc["bme"] = getBMEJson();
@@ -158,6 +176,9 @@ void httpDashboard() {
 void httpUpdate() {
     auto ledValue = static_cast<RGB_COLOR>(server.arg("ledValue").toInt());
     rgbSetValue(ledValue);
+
+    auto modeValue = static_cast<METEO_MODE>(server.arg("modeValue").toInt());
+    setMeteoMode(modeValue);
 
     String lcdText = server.arg("lcdText");
     if (lcdText.length() > 0) {

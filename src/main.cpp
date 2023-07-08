@@ -56,4 +56,5 @@ void loop() {
     if (debugTimer.isReady()) debugLoop();
     if (sensorsTimer.isReady()) updateSensors();
     if (clockTimer.isReady()) timerTick();
+    buttonTick();
 }

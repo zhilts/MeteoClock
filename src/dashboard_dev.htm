@@ -37,6 +37,20 @@
             </select>
         </p>
         <p>
+            <label for="ModeValue">Mode:</label>
+            <select id="ModeValue" name="modeValue">
+                <option value="0">Clock</option>
+                <option value="1">Temperature hourly</option>
+                <option value="2">Temperature daily</option>
+                <option value="3">Humidity hourly</option>
+                <option value="4">Humidity daily</option>
+                <option value="5">Pressure hourly</option>
+                <option value="6">Pressure daily</option>
+                <option value="7">CO2 hourly</option>
+                <option value="8">CO2 daily</option>
+            </select>
+        </p>
+        <p>
             <label for="LcdText">LCD Text:</label>
             <input id="LcdText" name="lcdText"/>
         </p>
@@ -57,6 +71,7 @@
     // test-data-start
     const currentData = {
         "ledValue": 3,
+        "modeValue": 3,
         "photoValue": 341,
         "co2": {"status": 0, "value": 1135},
         "bme": {"pressure": 97773.60156, "temperature": 27.42000008, "humidity": 52},
@@ -66,6 +81,7 @@
     // test-data-end
     const {
         ledValue,
+        modeValue,
         co2: {status: co2Status, value: co2Value},
         bme: {pressure, temperature, humidity},
         time: {iso: isoTime},
@@ -79,6 +95,7 @@
     $('#time').text(isoTime);
 
     $(`#LedValue option[value="${ledValue}"]`).prop('selected', true);
+    $(`#ModeValue option[value="${modeValue}"]`).prop('selected', true);
     $("#LogsEnabled").prop('checked', logsEnabled);
     $("#LogsHost").val(logsHost);
     $("#LogsPort").val(logsPort);
