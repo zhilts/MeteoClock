@@ -40,11 +40,21 @@ void lcdLoadClock() {
     lcd.createChar(7, LMB);
 }
 
+void lcdLoadPlot() {
+    lcd.createChar(0, row8);
+    lcd.createChar(1, row1);
+    lcd.createChar(2, row2);
+    lcd.createChar(3, row3);
+    lcd.createChar(4, row4);
+    lcd.createChar(5, row5);
+    lcd.createChar(6, row6);
+    lcd.createChar(7, row7);
+}
+
 void setupLCD() {
     lcd.init();
     lcd.backlight();
     lcd.clear();
-    lcdLoadClock();
 }
 
 void lcdSetCursor(int x, int y) {
@@ -66,106 +76,106 @@ void lcdClear() {
 void drawDig(uint8_t dig, uint8_t x, uint8_t y) {
     switch (dig) {
         case 0:
-            lcd.setCursor(x, y);
-            lcd.write(0);
-            lcd.write(1);
-            lcd.write(2);
-            lcd.setCursor(x, y + 1);
-            lcd.write(3);
-            lcd.write(4);
-            lcd.write(5);
+            lcdSetCursor(x, y);
+            lcdWrite(0);
+            lcdWrite(1);
+            lcdWrite(2);
+            lcdSetCursor(x, y + 1);
+            lcdWrite(3);
+            lcdWrite(4);
+            lcdWrite(5);
             break;
         case 1:
-            lcd.setCursor(x + 1, y);
-            lcd.write(1);
-            lcd.write(2);
-            lcd.setCursor(x + 2, y + 1);
-            lcd.write(5);
+            lcdSetCursor(x + 1, y);
+            lcdWrite(1);
+            lcdWrite(2);
+            lcdSetCursor(x + 2, y + 1);
+            lcdWrite(5);
             break;
         case 2:
-            lcd.setCursor(x, y);
-            lcd.write(6);
-            lcd.write(6);
-            lcd.write(2);
-            lcd.setCursor(x, y + 1);
-            lcd.write(3);
-            lcd.write(7);
-            lcd.write(7);
+            lcdSetCursor(x, y);
+            lcdWrite(6);
+            lcdWrite(6);
+            lcdWrite(2);
+            lcdSetCursor(x, y + 1);
+            lcdWrite(3);
+            lcdWrite(7);
+            lcdWrite(7);
             break;
         case 3:
-            lcd.setCursor(x, y);
-            lcd.write(6);
-            lcd.write(6);
-            lcd.write(2);
-            lcd.setCursor(x, y + 1);
-            lcd.write(7);
-            lcd.write(7);
-            lcd.write(5);
+            lcdSetCursor(x, y);
+            lcdWrite(6);
+            lcdWrite(6);
+            lcdWrite(2);
+            lcdSetCursor(x, y + 1);
+            lcdWrite(7);
+            lcdWrite(7);
+            lcdWrite(5);
             break;
         case 4:
-            lcd.setCursor(x, y);
-            lcd.write(3);
-            lcd.write(4);
-            lcd.write(2);
-            lcd.setCursor(x + 2, y + 1);
-            lcd.write(5);
+            lcdSetCursor(x, y);
+            lcdWrite(3);
+            lcdWrite(4);
+            lcdWrite(2);
+            lcdSetCursor(x + 2, y + 1);
+            lcdWrite(5);
             break;
         case 5:
-            lcd.setCursor(x, y);
-            lcd.write(0);
-            lcd.write(6);
-            lcd.write(6);
-            lcd.setCursor(x, y + 1);
-            lcd.write(7);
-            lcd.write(7);
-            lcd.write(5);
+            lcdSetCursor(x, y);
+            lcdWrite(0);
+            lcdWrite(6);
+            lcdWrite(6);
+            lcdSetCursor(x, y + 1);
+            lcdWrite(7);
+            lcdWrite(7);
+            lcdWrite(5);
             break;
         case 6:
-            lcd.setCursor(x, y);
-            lcd.write(0);
-            lcd.write(6);
-            lcd.write(6);
-            lcd.setCursor(x, y + 1);
-            lcd.write(3);
-            lcd.write(7);
-            lcd.write(5);
+            lcdSetCursor(x, y);
+            lcdWrite(0);
+            lcdWrite(6);
+            lcdWrite(6);
+            lcdSetCursor(x, y + 1);
+            lcdWrite(3);
+            lcdWrite(7);
+            lcdWrite(5);
             break;
         case 7:
-            lcd.setCursor(x, y);
-            lcd.write(1);
-            lcd.write(1);
-            lcd.write(2);
-            lcd.setCursor(x + 1, y + 1);
-            lcd.write(0);
+            lcdSetCursor(x, y);
+            lcdWrite(1);
+            lcdWrite(1);
+            lcdWrite(2);
+            lcdSetCursor(x + 1, y + 1);
+            lcdWrite(0);
             break;
         case 8:
-            lcd.setCursor(x, y);
-            lcd.write(0);
-            lcd.write(6);
-            lcd.write(2);
-            lcd.setCursor(x, y + 1);
-            lcd.write(3);
-            lcd.write(7);
-            lcd.write(5);
+            lcdSetCursor(x, y);
+            lcdWrite(0);
+            lcdWrite(6);
+            lcdWrite(2);
+            lcdSetCursor(x, y + 1);
+            lcdWrite(3);
+            lcdWrite(7);
+            lcdWrite(5);
             break;
         case 9:
-            lcd.setCursor(x, y);
-            lcd.write(0);
-            lcd.write(6);
-            lcd.write(2);
-            lcd.setCursor(x + 1, y + 1);
-            lcd.write(4);
-            lcd.write(5);
+            lcdSetCursor(x, y);
+            lcdWrite(0);
+            lcdWrite(6);
+            lcdWrite(2);
+            lcdSetCursor(x + 1, y + 1);
+            lcdWrite(4);
+            lcdWrite(5);
             break;
         case 10:
-            lcd.setCursor(x, y);
-            lcd.write(32);
-            lcd.write(32);
-            lcd.write(32);
-            lcd.setCursor(x, y + 1);
-            lcd.write(32);
-            lcd.write(32);
-            lcd.write(32);
+            lcdSetCursor(x, y);
+            lcdWrite(32);
+            lcdWrite(32);
+            lcdWrite(32);
+            lcdSetCursor(x, y + 1);
+            lcdWrite(32);
+            lcdWrite(32);
+            lcdWrite(32);
             break;
     }
 }
