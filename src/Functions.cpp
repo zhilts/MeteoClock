@@ -26,6 +26,12 @@ static const char *dayNames[] = {
         "Sat",
 };
 
+enum DisplayMode {
+    DISPLAY_MODE_YEAR = 0,
+    DISPLAY_MODE_DAY_OF_WEEK = 1,
+    DISPLAY_MODE_SECONDS = 2,
+};
+
 void updateCO2Led(bool tick) {
     switch (AllSensors.co2Level) {
         case CO2_LEVEL_GOOD:
@@ -50,52 +56,67 @@ void drawdots(byte x, byte y, boolean state) {
     lcdWrite(code);
 }
 
-uint8_t lastHour = -1;
-uint8_t lastMin = -1;
-uint8_t lastSec = -1;
+DateTime lastDateTime = DateTime();
 
-void updateDate(DateTime now) {
+void updateDate(uint16_t year, uint8_t month, uint8_t day, uint8_t dayOfTheWeek) {
     lcdSetCursor(15, 0);
-    int day = now.day();
-    int month = now.month();
     if (day < 10) lcdPrint("0");
     lcdPrint(String(day));
     lcdPrint(".");
     if (month < 10) lcdPrint("0");
     lcdPrint(String(month));
 
-    if (DISP_MODE == 0) {
+    if (DISP_MODE == DISPLAY_MODE_YEAR) {
         lcdSetCursor(16, 1);
-        lcdPrint(String(now.year()));
-    } else if (DISP_MODE == 1) {
+        lcdPrint(String(year));
+    } else if (DISP_MODE == DISPLAY_MODE_DAY_OF_WEEK) {
         lcdSetCursor(16, 1);
-        int dayofweek = now.dayOfTheWeek();
-        lcdPrint(dayNames[dayofweek]);
+        lcdPrint(dayNames[dayOfTheWeek]);
     }
 }
 
+uint8_t lastYear = -1;
+uint8_t lastMonth = -1;
+uint8_t lastDay = -1;
+uint8_t lastHour = -1;
+uint8_t lastMinute = -1;
+uint8_t lastSecond = -1;
+uint8_t lastDayOfTheWeek = -1;
+
 void updateClock(bool dotFlag) {
     DateTime now = getNow();
-    uint8_t hrs = now.hour();
-    uint8_t mins = now.minute();
-    uint8_t secs = now.second();
-    if (lastHour != hrs || lastMin != mins) {
-        lcdDrawClock(hrs, mins, 0, 0);
+    uint16_t year = now.year();
+    uint8_t month = now.month();
+    uint8_t day = now.day();
+    uint8_t hour = now.hour();
+    uint8_t minute = now.minute();
+    uint8_t second = now.second();
+    uint8_t dayOfTheWeek = now.dayOfTheWeek();
+    if (lastHour != hour || lastMinute != minute) {
+        lcdDrawClock(hour, minute, 0, 0);
     }
-    if (DISP_MODE == 2 && lastSec != secs) {
+    if (DISP_MODE == DISPLAY_MODE_SECONDS && lastSecond != second) {
         lcdSetCursor(16, 1);
-        if (secs < 10) lcdPrint("0");
-        lcdPrint(String(secs));
+        if (second < 10) lcdPrint("0");
+        lcdPrint(String(second));
     }
-    if (lastHour != hrs) {
-        updateDate(now);
+
+    if (lastYear != year
+        || lastMonth != month
+        || lastDay != day
+        || lastDayOfTheWeek != dayOfTheWeek) {
+        updateDate(year, month, day, dayOfTheWeek);
     }
 
     drawdots(7, 0, dotFlag);
 
-    lastHour = hrs;
-    lastMin = mins;
-    lastSec = secs;
+    lastYear = year;
+    lastMonth = month;
+    lastDay = day;
+    lastHour = hour;
+    lastMinute = minute;
+    lastSecond = second;
+    lastDayOfTheWeek = dayOfTheWeek;
 }
 
 boolean timerTickState = false;
@@ -120,7 +141,7 @@ void drawSensors() {
     lcdPrint(String(AllSensors.co2Value) + " ppm");
 
     lcdSetCursor(0, 3);
-    lcdPrint(String((int)AllSensors.pressure) + " mm  rain ");
+    lcdPrint(String((int) AllSensors.pressure) + " mm  rain ");
     lcdPrint(F("       "));
     lcdSetCursor(13, 3);
 //    lcdPrint(String(dispRain) + "%");
