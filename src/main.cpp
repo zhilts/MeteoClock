@@ -16,6 +16,7 @@
 #include "Button.h"
 #include "Functions.h"
 #include "Rain.h"
+#include "MQTT.h"
 
 
 GTimer_ms sensorsTimer(SENS_TIME);
@@ -27,6 +28,7 @@ void setup() {
     setupLog();
     connectWifi();
     setupOTA();
+    setupMQTT();
     setupLCD();
     setupButton();
     setupRGB();

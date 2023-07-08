@@ -11,6 +11,7 @@
 #include "Plot.h"
 #include "Data.h"
 #include "Rain.h"
+#include "MQTT.h"
 
 AllSensors CurrentSensors;
 
@@ -164,6 +165,14 @@ void copyStructure(const AllSensors &source, AllSensors &destination) {
     memcpy(&destination, &source, sizeof(AllSensors));
 }
 
+void publishValue(AllSensors value) {
+    mqttPublish("co2", String(value.co2Value));
+    mqttPublish("temperature", String(value.temperature));
+    mqttPublish("pressure", String(value.pressure));
+    mqttPublish("humidity", String(value.humidity));
+    mqttPublish("rain", String(value.rain));
+}
+
 void updateSensors() {
     AllSensors newValues;
     newValues.co2Level = getCO2Level();
@@ -175,6 +184,7 @@ void updateSensors() {
     newValues.rain = getRainValue();
 
     copyStructure(newValues, CurrentSensors);
+    publishValue(newValues);
 
     if (hourPlotTimer.isReady()) {
         for (byte i = 0; i < HISTORY_LENGTH - 1; i++) {

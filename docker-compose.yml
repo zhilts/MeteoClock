@@ -4,3 +4,13 @@ services:
   logs:
     build:
       context: ./logs
+
+  mqtt:
+    build:
+      context: ./mqtt
+    restart: always
+    volumes:
+      - mqtt_data:/mosquitto/data/
+
+volumes:
+  mqtt_data: { }
