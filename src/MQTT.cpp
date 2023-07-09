@@ -3,19 +3,26 @@
 #include "MQTT.h"
 #include "Secrets.h"
 #include "Config.h"
+#include "Log.h"
 
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
 
+bool isMqttEnabled = MQTT_ENABLED;
+String mqttName = RIG_IDENTIFIER;
+String mqttHost = MQTT_HOST;
+int mqttPort = MQTT_PORT;
+
 void setupMQTT() {
-    mqttClient.setServer(MQTT_HOST, MQTT_PORT);
+    log("[MQTT] setup. " + mqttName + "@" + mqttHost + ":" + String(mqttPort));
+    mqttClient.setServer(mqttHost.c_str(), mqttPort);
 }
 
 bool mqttIfReconnect() {
-    if (!ENABLE_MQTT) return false;
+    if (!isMqttEnabled) return false;
     int count = 0;
     while (!mqttClient.connected() && count < MQTT_RECONNECT_RETRIES) {
-        if (mqttClient.connect(RIG_IDENTIFIER)) {
+        if (mqttClient.connect(mqttName.c_str())) {
             Serial.println("Connected to MQTT broker");
         } else {
             Serial.print("Failed to connect to MQTT broker, rc=");
@@ -30,7 +37,24 @@ bool mqttIfReconnect() {
 
 void mqttPublish(String topic, String message) {
     if (mqttClient.connected()) {
-        String path = String(RIG_IDENTIFIER) + "/" + topic;
+        String path = mqttName + "/" + topic;
         mqttClient.publish(path.c_str(), message.c_str());
     }
+}
+
+MQTTConfig getMQTTConfig() {
+    MQTTConfig config;
+    config.enabled = isMqttEnabled;
+    config.name = mqttName;
+    config.host = mqttHost;
+    config.port = mqttPort;
+    return config;
+}
+
+void setMQTTConfig(MQTTConfig config) {
+    isMqttEnabled = config.enabled;
+    mqttName = config.name;
+    mqttHost = config.host;
+    mqttPort = config.port;
+    setupMQTT();
 }

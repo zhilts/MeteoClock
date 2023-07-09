@@ -7,29 +7,155 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link href="//cdn.muicss.com/mui-0.10.3/css/mui.min.css" rel="stylesheet" type="text/css"/>
     <script src="//cdn.muicss.com/mui-0.10.3/js/mui.min.js"></script>
+    <style>
+        h3 {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding: 20px;
+        }
+
+        .control {
+            display: flex;
+            gap: 20px;
+        }
+
+        .control label {
+            min-width: 80px;
+        }
+
+        .control input:not([type='checkbox']), .control select {
+            flex-grow: 2;
+        }
+
+        .multi-control {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mui-container {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            grid-template-rows: auto;
+            grid-auto-rows: auto;
+            gap: 20px
+        }
+
+        .mui-panel {
+            margin: 0;
+        }
+
+        .mui-container::before {
+            display: none;
+        }
+
+        .mui-appbar {
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body class="mui-container">
 <div class="mui-panel">
-    <h2>Status</h2>
-    <p>
-        CO2: <span id="co2Value"></span> ppm; Status: <span id="co2Status"></span>
+    <div class="mui-appbar">
+        <h3>Status</h3>
+    </div>
+    <p class="control">
+        <label>CO2:</label>
+        <span id="co2Value"></span>
     </p>
-    <p>
-        Pressure: <span id="pressure"></span> Pa; Temperature: <span id="temperature"></span>°C; Humidity: <span
-            id="humidity"></span>%
+    <p class="control">
+        <label>Pressure:</label>
+        <span id="pressure"></span>
     </p>
-    <p>
-        Rain: <span id="rain"></span>%
+    <p class="control">
+        <label>Temperature:</label>
+        <span id="temperature"></span>
     </p>
-    <p style="display: flex; align-items: center; gap: 20px">
-        Time: <span id="time"></span>
-        <button type="button" class="mui-btn mui-btn--primary" onclick="postTime()">Set current</button>
+    <p class="control">
+        <label>Humidity:</label>
+        <span id="humidity"></span>
+    </p>
+    <p class="control">
+        <label>Rain:</label>
+        <span id="rain"></span>
+    </p>
+    <p class="control">
+        <label>Time:</label>
+        <span id="time"></span>
     </p>
 </div>
 <div class="mui-panel">
-    <h2>Update</h2>
-    <form action="/update" method="POST">
-        <p>
+    <div class="mui-appbar">
+        <h3>Config</h3>
+    </div>
+    <form action="/config" method="POST" class="mui-form">
+        <div class="multi-control">
+            <h4>Logs</h4>
+            <p class="control">
+                <label for="LogsEnabled">Enabled:</label>
+                <input type="checkbox" id="LogsEnabled" name="logsEnabled">
+            </p>
+
+            <p class="control">
+                <label for="LogsHost">Host:</label>
+                <input id="LogsHost" name="logsHost">
+            </p>
+            <p class="control">
+                <label for="LogsPort">Port:</label>
+                <input id="LogsPort" name="logsPort">
+            </p>
+        </div>
+        <div class="mui-divider"></div>
+        <div class="multi-control">
+            <h4>MQTT</h4>
+
+            <p class="control">
+                <label for="LogsEnabled">Enabled:</label>
+                <input type="checkbox" id="MQTTEnabled" name="mqttEnabled">
+            </p>
+
+            <p class="control">
+                <label for="MQTTName">Name:</label>
+                <input id="MQTTName" name="mqttName">
+            </p>
+
+            <p class="control">
+                <label for="MQTTHost">Host:</label>
+                <input id="MQTTHost" name="mqttHost">
+            </p>
+
+            <p class="control">
+                <label for="MQTTPort">Port:</label>
+                <input id="MQTTPort" name="mqttPort">
+            </p>
+        </div>
+        <button type="submit" class="mui-btn mui-btn--primary">Save</button>
+        <button type="button" class="mui-btn mui-btn--primary" onclick="postTime()">Set Date & Time</button>
+    </form>
+</div>
+<div class="mui-panel">
+    <div class="mui-appbar">
+        <h3>Wi-Fi</h3>
+    </div>
+    <form action="/wifi" method="POST" class="mui-form">
+        <p class="control">
+            <label for="WiFiSSID">SSID:</label>
+            <input id="WiFiSSID" name="wifiSSID">
+        </p>
+
+        <p class="control">
+            <label for="WiFiPassword">Password:</label>
+            <input id="WiFiPassword" name="wifiPassword" type="password">
+        </p>
+        <button type="submit" class="mui-btn mui-btn--primary">Save & Restart</button>
+    </form>
+</div>
+<div class="mui-panel">
+    <div class="mui-appbar">
+        <h3>Debug</h3>
+    </div>
+    <form action="/debug" method="POST">
+        <p class="control">
             <label for="LedValue">Led value:</label>
             <select id="LedValue" name="ledValue">
                 <option value="0">Off</option>
@@ -39,7 +165,7 @@
                 <option value="4">Yellow</option>
             </select>
         </p>
-        <p>
+        <p class="control">
             <label for="ModeValue">Mode:</label>
             <select id="ModeValue" name="modeValue">
                 <option value="0">Clock</option>
@@ -55,34 +181,11 @@
                 <option value="10">Rain daily</option>
             </select>
         </p>
-        <p>
+        <p class="control">
             <label for="LcdText">LCD Text:</label>
             <input id="LcdText" name="lcdText"/>
         </p>
-        <p>
-            <label for="LogsEnabled">Logs:</label>
-            <input type="checkbox" id="LogsEnabled" name="logsEnabled">
-
-            <label for="LogsHost">Host:</label>
-            <input id="LogsHost" name="logsHost">
-
-            <label for="LogsPort">Port:</label>
-            <input id="LogsPort" name="logsPort">
-        </p>
-        <button type="submit" class="mui-btn mui-btn--primary">Save</button>
-    </form>
-</div>
-<div class="mui-panel">
-    <h2>Wi-Fi</h2>
-    <form action="/wifi" method="POST">
-        <p>
-            <label for="WiFiSSID">SSID:</label>
-            <input id="WiFiSSID" name="wifiSSID">
-
-            <label for="WiFiPassword">Password:</label>
-            <input id="WiFiPassword" name="wifiPassword" type="password">
-        </p>
-        <button type="submit" class="mui-btn mui-btn--primary">Save & Restart</button>
+        <button type="submit" class="mui-btn mui-btn--primary">Submit</button>
     </form>
 </div>
 <script>
@@ -96,32 +199,37 @@
         "time": {"iso": "2023-07-02T01:11:14"},
         "rain": 30,
         "logs": {enabled: true, host: "my.local", port: 8000},
+        "mqtt": {enabled: true, name: "meteo", host: "mqtt.local", port: 1883},
         "wifi": {"ssid": "WWW"}
     };
     // test-data-end
     const {
         ledValue,
         modeValue,
-        co2: {status: co2Status, value: co2Value},
+        co2: {value: co2Value},
         bme: {pressure, temperature, humidity},
         time: {iso: isoTime},
         rain,
         logs: {enabled: logsEnabled, host: logsHost, port: logsPort},
+        mqtt: {enabled: mqttEnabled, name: mqttName, host: mqttHost, port: mqttPort},
         wifi: {ssid}
     } = currentData;
-    $('#co2Status').text(co2Status);
-    $('#co2Value').text(co2Value);
-    $('#pressure').text(pressure.toFixed(2));
-    $('#temperature').text(temperature.toFixed(1));
-    $('#humidity').text(humidity);
+    $('#co2Value').text(co2Value + 'ppm');
+    $('#pressure').text(pressure.toFixed(2) + 'Pa');
+    $('#temperature').text(temperature.toFixed(1) + '°C');
+    $('#humidity').text(humidity + '%');
+    $('#rain').text(rain + '%');
     $('#time').text(isoTime);
-    $('#rain').text(rain);
 
     $(`#LedValue option[value="${ledValue}"]`).prop('selected', true);
     $(`#ModeValue option[value="${modeValue}"]`).prop('selected', true);
     $("#LogsEnabled").prop('checked', logsEnabled);
     $("#LogsHost").val(logsHost);
     $("#LogsPort").val(logsPort);
+    $("#MQTTEnabled").prop('checked', mqttEnabled);
+    $("#MQTTName").val(mqttName);
+    $("#MQTTHost").val(mqttHost);
+    $("#MQTTPort").val(mqttPort);
     $("#WiFiSSID").val(ssid);
 </script>
 <script>
