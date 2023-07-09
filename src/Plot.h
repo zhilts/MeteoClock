@@ -9,8 +9,8 @@
 #define TEMP_MAX 35
 #define HUM_MIN 0
 #define HUM_MAX 100
-#define PRESS_MIN (-100)
-#define PRESS_MAX 100
+#define PRESS_MIN 740
+#define PRESS_MAX 760
 #define CO2_MIN 300
 #define CO2_MAX 2000
 #define RAIN_MIN (-100)
