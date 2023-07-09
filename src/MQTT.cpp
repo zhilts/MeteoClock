@@ -2,6 +2,7 @@
 #include <PubSubClient.h>
 #include "MQTT.h"
 #include "Secrets.h"
+#include "Config.h"
 
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
@@ -11,6 +12,7 @@ void setupMQTT() {
 }
 
 bool mqttIfReconnect() {
+    if (!ENABLE_MQTT) return false;
     int count = 0;
     while (!mqttClient.connected() && count < MQTT_RECONNECT_RETRIES) {
         if (mqttClient.connect(RIG_IDENTIFIER)) {

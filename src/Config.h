@@ -25,4 +25,6 @@
 #define SENS_TIME 30000   // sensor update frequency ms
 #define DISP_MODE 1       // upper right corner: 0 - year, 1 - day of the week, 2 - seconds
 
+#define ENABLE_MQTT true
+
 #endif //METEO_CLOCK_CONFIG_H
