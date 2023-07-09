@@ -74,6 +74,8 @@ void updateDate(uint16_t year, uint8_t month, uint8_t day, uint8_t dayOfTheWeek)
         lcdPrint(String(year));
     } else if (DISP_MODE == DISPLAY_MODE_DAY_OF_WEEK) {
         lcdSetCursor(16, 1);
+        lcdPrint("    ");
+        lcdSetCursor(16, 1);
         lcdPrint(dayNames[dayOfTheWeek]);
     }
 }
