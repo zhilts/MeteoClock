@@ -13,6 +13,8 @@
 #define PRESS_MAX 100
 #define CO2_MIN 300
 #define CO2_MAX 2000
+#define RAIN_MIN -100
+#define RAIN_MAX 100
 
 void redrawPlot(METEO_MODE mode, AllSensors *hourly, AllSensors *daily);
 
