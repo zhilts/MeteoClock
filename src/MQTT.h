@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+#define MQTT_RECONNECT_RETRIES 3
+
 void setupMQTT();
 
 void mqttPublish(String topic, String message);

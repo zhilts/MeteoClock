@@ -8,34 +8,27 @@ PubSubClient mqttClient(wifiClient);
 
 void setupMQTT() {
     mqttClient.setServer(MQTT_HOST, MQTT_PORT);
-
-    while (!mqttClient.connected()) {
-        if (mqttClient.connect(RIG_IDENTIFIER)) {
-            Serial.println("Connected to MQTT broker");
-        } else {
-            Serial.print("Failed to connect to MQTT broker, rc=");
-            Serial.print(mqttClient.state());
-            Serial.println(" Retrying in 5 seconds...");
-            delay(5000);
-        }
-    }
 }
 
-void reconnect() {
-    while (!mqttClient.connected()) {
+bool ifReconnect() {
+    int count = 0
+    while (!mqttClient.connected() && vount < MQTT_RECONNECT_RETRIES) {
         if (mqttClient.connect(RIG_IDENTIFIER)) {
             Serial.println("Connected to MQTT broker");
         } else {
             Serial.print("Failed to connect to MQTT broker, rc=");
             Serial.print(mqttClient.state());
-            Serial.println(" Retrying in 5 seconds...");
-            delay(5000);
+            Serial.println(" Retrying in 1 seconds...");
+            delay(1000);
         }
+        count++;
     }
+    return mqttClient.connected();
 }
 
 void mqttPublish(String topic, String message) {
-    reconnect();
-    String path = String(RIG_IDENTIFIER) + "/" + topic;
-    mqttClient.publish(path.c_str(), message.c_str());
+    if (ifReconnect()) {
+        String path = String(RIG_IDENTIFIER) + "/" + topic;
+        mqttClient.publish(path.c_str(), message.c_str());
+    }
 }
