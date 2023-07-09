@@ -11,6 +11,7 @@
 #include "BME.h"
 #include "Button.h"
 #include "Rain.h"
+#include "Memory.h"
 
 WebServer server(80);
 
@@ -88,6 +89,19 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "        <button type=\"submit\" class=\"mui-btn mui-btn--primary\">Save</button>\n"
                          "    </form>\n"
                          "</div>\n"
+                         "<div class=\"mui-panel\">\n"
+                         "    <h2>Wi-Fi</h2>\n"
+                         "    <form action=\"/wifi\" method=\"POST\">\n"
+                         "        <p>\n"
+                         "            <label for=\"WiFiSSID\">SSID:</label>\n"
+                         "            <input id=\"WiFiSSID\" name=\"wifiSSID\">\n"
+                         "\n"
+                         "            <label for=\"WiFiPassword\">Password:</label>\n"
+                         "            <input id=\"WiFiPassword\" name=\"wifiPassword\" type=\"password\">\n"
+                         "        </p>\n"
+                         "        <button type=\"submit\" class=\"mui-btn mui-btn--primary\">Save & Restart</button>\n"
+                         "    </form>\n"
+                         "</div>\n"
                          "<script>\n"
                          "    const {\n"
                          "        ledValue,\n"
@@ -97,6 +111,7 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "        time: {iso: isoTime},\n"
                          "        rain,\n"
                          "        logs: {enabled: logsEnabled, host: logsHost, port: logsPort},\n"
+                         "        wifi: {ssid}\n"
                          "    } = currentData;\n"
                          "    $('#co2Status').text(co2Status);\n"
                          "    $('#co2Value').text(co2Value);\n"
@@ -111,6 +126,7 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "    $(\"#LogsEnabled\").prop('checked', logsEnabled);\n"
                          "    $(\"#LogsHost\").val(logsHost);\n"
                          "    $(\"#LogsPort\").val(logsPort);\n"
+                         "    $(\"#WiFiSSID\").val(ssid);\n"
                          "</script>\n"
                          "<script>\n"
                          "    async function postTime() {\n"
@@ -162,6 +178,13 @@ DynamicJsonDocument getLogsJson() {
     return jsonDoc;
 }
 
+DynamicJsonDocument getWifiJson() {
+    DynamicJsonDocument jsonDoc(256);
+    WiFiCredentials credentials = readWiFiCredentials();
+    jsonDoc["ssid"] = credentials.ssid;
+    return jsonDoc;
+}
+
 void httpDashboard() {
     DynamicJsonDocument jsonDoc(512);
 
@@ -173,6 +196,7 @@ void httpDashboard() {
     jsonDoc["time"] = getTimeJson();
     jsonDoc["rain"] = getRainValue();
     jsonDoc["logs"] = getLogsJson();
+    jsonDoc["wifi"] = getWifiJson();
 
     String jsonString;
     serializeJson(jsonDoc, jsonString);
@@ -208,6 +232,18 @@ void httpUpdate() {
     server.send(302, "text/plain", "Refresh");
 }
 
+void httpUpdateWiFi() {
+    WiFiCredentials credentials;
+    credentials.ssid = server.arg("wifiSSID");
+    credentials.password = server.arg("wifiPassword");
+    writeWiFiCredentials(credentials);
+
+    server.sendHeader("Location", "/");
+    server.send(302, "text/plain", "Refresh");
+
+    ESP.restart();
+}
+
 void httpSetDatetime() {
     String datetimeStr = server.arg("datetime");
     unsigned long long  datetime = atoll(datetimeStr.c_str());
@@ -220,6 +256,7 @@ void setupServer() {
     MDNS.addService("http", "tcp", 80);
     server.on("/", httpDashboard);
     server.on("/update", HTTP_POST, httpUpdate);
+    server.on("/wifi", HTTP_POST, httpUpdateWiFi);
     server.on("/datetime", HTTP_POST, httpSetDatetime);
     server.begin();
 }

@@ -72,6 +72,19 @@
         <button type="submit" class="mui-btn mui-btn--primary">Save</button>
     </form>
 </div>
+<div class="mui-panel">
+    <h2>Wi-Fi</h2>
+    <form action="/wifi" method="POST">
+        <p>
+            <label for="WiFiSSID">SSID:</label>
+            <input id="WiFiSSID" name="wifiSSID">
+
+            <label for="WiFiPassword">Password:</label>
+            <input id="WiFiPassword" name="wifiPassword" type="password">
+        </p>
+        <button type="submit" class="mui-btn mui-btn--primary">Save & Restart</button>
+    </form>
+</div>
 <script>
     // test-data-start
     const currentData = {
@@ -83,6 +96,7 @@
         "time": {"iso": "2023-07-02T01:11:14"},
         "rain": 30,
         "logs": {enabled: true, host: "my.local", port: 8000},
+        "wifi": {"ssid": "WWW"}
     };
     // test-data-end
     const {
@@ -93,6 +107,7 @@
         time: {iso: isoTime},
         rain,
         logs: {enabled: logsEnabled, host: logsHost, port: logsPort},
+        wifi: {ssid}
     } = currentData;
     $('#co2Status').text(co2Status);
     $('#co2Value').text(co2Value);
@@ -107,6 +122,7 @@
     $("#LogsEnabled").prop('checked', logsEnabled);
     $("#LogsHost").val(logsHost);
     $("#LogsPort").val(logsPort);
+    $("#WiFiSSID").val(ssid);
 </script>
 <script>
     async function postTime() {

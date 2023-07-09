@@ -27,7 +27,7 @@ GTimer_ms mqttPublishTimet((long) 10 * 60 * 1000);         // 10 minutes
 
 void setup() {
     setupLog();
-    connectWifi();
+    setupWifi();
     setupOTA();
     setupMQTT();
     setupLCD();

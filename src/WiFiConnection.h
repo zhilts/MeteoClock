@@ -1,6 +1,6 @@
 #ifndef METEO_CLOCK_WIFICONNECTION_H
 #define METEO_CLOCK_WIFICONNECTION_H
 
-void connectWifi();
+void setupWifi();
 
 #endif //METEO_CLOCK_WIFICONNECTION_H
