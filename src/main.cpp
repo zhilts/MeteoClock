@@ -23,6 +23,7 @@ GTimer_ms sensorsTimer(SENS_TIME);
 GTimer_ms clockTimer(500);
 GTimer_ms debugTimer(2000);
 GTimer_ms rainPredictTimer((long) 10 * 60 * 1000);         // 10 minutes
+GTimer_ms mqttPublishTimet((long) 10 * 60 * 1000);         // 10 minutes
 
 void setup() {
     setupLog();
@@ -63,4 +64,5 @@ void loop() {
     if (debugTimer.isReady()) debugLoop();
     if (sensorsTimer.isReady()) updateSensors();
     if (clockTimer.isReady()) timerTick();
+    if (mqttPublishTimet.isReady()) publishToMqtt();
 }

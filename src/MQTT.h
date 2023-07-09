@@ -7,6 +7,8 @@
 
 void setupMQTT();
 
+bool mqttIfReconnect();
+
 void mqttPublish(String topic, String message);
 
 #endif //METEO_CLOCK_MQTT_H

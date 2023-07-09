@@ -173,6 +173,12 @@ void publishValue(AllSensors value) {
     mqttPublish("rain", String(value.rain));
 }
 
+void publishToMqtt() {
+    if (mqttIfReconnect()) {
+        publishValue(CurrentSensors);
+    }
+}
+
 void updateSensors() {
     AllSensors newValues;
     newValues.co2Level = getCO2Level();
@@ -184,7 +190,6 @@ void updateSensors() {
     newValues.rain = getRainValue();
 
     copyStructure(newValues, CurrentSensors);
-    publishValue(newValues);
 
     if (hourPlotTimer.isReady()) {
         for (byte i = 0; i < HISTORY_LENGTH - 1; i++) {

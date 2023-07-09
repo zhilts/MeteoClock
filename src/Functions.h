@@ -6,6 +6,9 @@
 #define METEO_CLOCK_FUNCTIONS_H
 
 void updateSensors();
+
 void timerTick();
+
+void publishToMqtt();
 
 #endif //METEO_CLOCK_FUNCTIONS_H

@@ -10,9 +10,9 @@ void setupMQTT() {
     mqttClient.setServer(MQTT_HOST, MQTT_PORT);
 }
 
-bool ifReconnect() {
-    int count = 0
-    while (!mqttClient.connected() && vount < MQTT_RECONNECT_RETRIES) {
+bool mqttIfReconnect() {
+    int count = 0;
+    while (!mqttClient.connected() && count < MQTT_RECONNECT_RETRIES) {
         if (mqttClient.connect(RIG_IDENTIFIER)) {
             Serial.println("Connected to MQTT broker");
         } else {
@@ -27,7 +27,7 @@ bool ifReconnect() {
 }
 
 void mqttPublish(String topic, String message) {
-    if (ifReconnect()) {
+    if (mqttClient.connected()) {
         String path = String(RIG_IDENTIFIER) + "/" + topic;
         mqttClient.publish(path.c_str(), message.c_str());
     }
