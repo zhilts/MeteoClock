@@ -229,20 +229,6 @@
         }
     }
 
-    // test-data-start
-    applyData({
-        "ledValue": 3,
-        "modeValue": 3,
-        "photoValue": 341,
-        "co2": {"status": 0, "value": 1135},
-        "bme": {"pressure": 97773.60156, "temperature": 27.42000008, "humidity": 52},
-        "time": {"iso": "2023-07-02T01:11:14"},
-        "rain": 30,
-        "logs": {enabled: true, host: "my.local", port: 8000},
-        "mqtt": {enabled: true, name: "meteo", host: "mqtt.local", port: 1883},
-        "wifi": {"ssid": "WWW"}
-    });
-    // test-data-end
     refreshData();
 </script>
 <script>
