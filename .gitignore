@@ -2,3 +2,4 @@ src/Secrets.h
 docker-compose.override.yml
 .pio
 cmake-build-debug
+CMakeListsPrivate.txt
