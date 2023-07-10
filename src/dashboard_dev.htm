@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Meteo clock setup</title>
+    <title>Meteo clock</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link href="//cdn.muicss.com/mui-0.10.3/css/mui.min.css" rel="stylesheet" type="text/css"/>
@@ -83,6 +83,7 @@
         <label>Time:</label>
         <span id="time"></span>
     </p>
+    <button type="button" class="mui-btn mui-btn--primary" onclick="refreshData()">Refresh</button>
 </div>
 <div class="mui-panel">
     <div class="mui-appbar">
@@ -189,8 +190,47 @@
     </form>
 </div>
 <script>
+    function applyData(currentData) {
+        const {
+            ledValue,
+            modeValue,
+            co2: {value: co2Value},
+            bme: {pressure, temperature, humidity},
+            time: {iso: isoTime},
+            rain,
+            logs: {enabled: logsEnabled, host: logsHost, port: logsPort},
+            mqtt: {enabled: mqttEnabled, name: mqttName, host: mqttHost, port: mqttPort},
+            wifi: {ssid}
+        } = currentData;
+        $('#co2Value').text(co2Value + 'ppm');
+        $('#pressure').text(pressure.toFixed(2) + 'Pa');
+        $('#temperature').text(temperature.toFixed(1) + '°C');
+        $('#humidity').text(humidity + '%');
+        $('#rain').text(rain + '%');
+        $('#time').text(isoTime);
+
+        $(`#LedValue option[value="${ledValue}"]`).prop('selected', true);
+        $(`#ModeValue option[value="${modeValue}"]`).prop('selected', true);
+        $("#LogsEnabled").prop('checked', logsEnabled);
+        $("#LogsHost").val(logsHost);
+        $("#LogsPort").val(logsPort);
+        $("#MQTTEnabled").prop('checked', mqttEnabled);
+        $("#MQTTName").val(mqttName);
+        $("#MQTTHost").val(mqttHost);
+        $("#MQTTPort").val(mqttPort);
+        $("#WiFiSSID").val(ssid);
+    }
+
+    async function refreshData() {
+        const response = await fetch('/data');
+        if (response.ok) {
+            const data = await response.json();
+            applyData(data);
+        }
+    }
+
     // test-data-start
-    const currentData = {
+    applyData({
         "ledValue": 3,
         "modeValue": 3,
         "photoValue": 341,
@@ -201,36 +241,9 @@
         "logs": {enabled: true, host: "my.local", port: 8000},
         "mqtt": {enabled: true, name: "meteo", host: "mqtt.local", port: 1883},
         "wifi": {"ssid": "WWW"}
-    };
+    });
     // test-data-end
-    const {
-        ledValue,
-        modeValue,
-        co2: {value: co2Value},
-        bme: {pressure, temperature, humidity},
-        time: {iso: isoTime},
-        rain,
-        logs: {enabled: logsEnabled, host: logsHost, port: logsPort},
-        mqtt: {enabled: mqttEnabled, name: mqttName, host: mqttHost, port: mqttPort},
-        wifi: {ssid}
-    } = currentData;
-    $('#co2Value').text(co2Value + 'ppm');
-    $('#pressure').text(pressure.toFixed(2) + 'Pa');
-    $('#temperature').text(temperature.toFixed(1) + '°C');
-    $('#humidity').text(humidity + '%');
-    $('#rain').text(rain + '%');
-    $('#time').text(isoTime);
-
-    $(`#LedValue option[value="${ledValue}"]`).prop('selected', true);
-    $(`#ModeValue option[value="${modeValue}"]`).prop('selected', true);
-    $("#LogsEnabled").prop('checked', logsEnabled);
-    $("#LogsHost").val(logsHost);
-    $("#LogsPort").val(logsPort);
-    $("#MQTTEnabled").prop('checked', mqttEnabled);
-    $("#MQTTName").val(mqttName);
-    $("#MQTTHost").val(mqttHost);
-    $("#MQTTPort").val(mqttPort);
-    $("#WiFiSSID").val(ssid);
+    refreshData();
 </script>
 <script>
     async function postTime() {

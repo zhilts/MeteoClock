@@ -20,7 +20,7 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "<html lang=\"en\">\n"
                          "<head>\n"
                          "    <meta charset=\"UTF-8\">\n"
-                         "    <title>Meteo clock setup</title>\n"
+                         "    <title>Meteo clock</title>\n"
                          "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
                          "    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js\"></script>\n"
                          "    <link href=\"//cdn.muicss.com/mui-0.10.3/css/mui.min.css\" rel=\"stylesheet\" type=\"text/css\"/>\n"
@@ -101,6 +101,7 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "        <label>Time:</label>\n"
                          "        <span id=\"time\"></span>\n"
                          "    </p>\n"
+                         "    <button type=\"button\" class=\"mui-btn mui-btn--primary\" onclick=\"refreshData()\">Refresh</button>\n"
                          "</div>\n"
                          "<div class=\"mui-panel\">\n"
                          "    <div class=\"mui-appbar\">\n"
@@ -207,34 +208,46 @@ const String DASHBOARD = "<!DOCTYPE html>\n"
                          "    </form>\n"
                          "</div>\n"
                          "<script>\n"
-                         "    const {\n"
-                         "        ledValue,\n"
-                         "        modeValue,\n"
-                         "        co2: {value: co2Value},\n"
-                         "        bme: {pressure, temperature, humidity},\n"
-                         "        time: {iso: isoTime},\n"
-                         "        rain,\n"
-                         "        logs: {enabled: logsEnabled, host: logsHost, port: logsPort},\n"
-                         "        mqtt: {enabled: mqttEnabled, name: mqttName, host: mqttHost, port: mqttPort},\n"
-                         "        wifi: {ssid}\n"
-                         "    } = currentData;\n"
-                         "    $('#co2Value').text(co2Value + 'ppm');\n"
-                         "    $('#pressure').text(pressure.toFixed(2) + 'Pa');\n"
-                         "    $('#temperature').text(temperature.toFixed(1) + '°C');\n"
-                         "    $('#humidity').text(humidity + '%');\n"
-                         "    $('#rain').text(rain + '%');\n"
-                         "    $('#time').text(isoTime);\n"
+                         "    function applyData(currentData) {\n"
+                         "        const {\n"
+                         "            ledValue,\n"
+                         "            modeValue,\n"
+                         "            co2: {value: co2Value},\n"
+                         "            bme: {pressure, temperature, humidity},\n"
+                         "            time: {iso: isoTime},\n"
+                         "            rain,\n"
+                         "            logs: {enabled: logsEnabled, host: logsHost, port: logsPort},\n"
+                         "            mqtt: {enabled: mqttEnabled, name: mqttName, host: mqttHost, port: mqttPort},\n"
+                         "            wifi: {ssid}\n"
+                         "        } = currentData;\n"
+                         "        $('#co2Value').text(co2Value + 'ppm');\n"
+                         "        $('#pressure').text(pressure.toFixed(2) + 'Pa');\n"
+                         "        $('#temperature').text(temperature.toFixed(1) + '°C');\n"
+                         "        $('#humidity').text(humidity + '%');\n"
+                         "        $('#rain').text(rain + '%');\n"
+                         "        $('#time').text(isoTime);\n"
                          "\n"
-                         "    $(`#LedValue option[value=\"${ledValue}\"]`).prop('selected', true);\n"
-                         "    $(`#ModeValue option[value=\"${modeValue}\"]`).prop('selected', true);\n"
-                         "    $(\"#LogsEnabled\").prop('checked', logsEnabled);\n"
-                         "    $(\"#LogsHost\").val(logsHost);\n"
-                         "    $(\"#LogsPort\").val(logsPort);\n"
-                         "    $(\"#MQTTEnabled\").prop('checked', mqttEnabled);\n"
-                         "    $(\"#MQTTName\").val(mqttName);\n"
-                         "    $(\"#MQTTHost\").val(mqttHost);\n"
-                         "    $(\"#MQTTPort\").val(mqttPort);\n"
-                         "    $(\"#WiFiSSID\").val(ssid);\n"
+                         "        $(`#LedValue option[value=\"${ledValue}\"]`).prop('selected', true);\n"
+                         "        $(`#ModeValue option[value=\"${modeValue}\"]`).prop('selected', true);\n"
+                         "        $(\"#LogsEnabled\").prop('checked', logsEnabled);\n"
+                         "        $(\"#LogsHost\").val(logsHost);\n"
+                         "        $(\"#LogsPort\").val(logsPort);\n"
+                         "        $(\"#MQTTEnabled\").prop('checked', mqttEnabled);\n"
+                         "        $(\"#MQTTName\").val(mqttName);\n"
+                         "        $(\"#MQTTHost\").val(mqttHost);\n"
+                         "        $(\"#MQTTPort\").val(mqttPort);\n"
+                         "        $(\"#WiFiSSID\").val(ssid);\n"
+                         "    }\n"
+                         "\n"
+                         "    async function refreshData() {\n"
+                         "        const response = await fetch('/data');\n"
+                         "        if (response.ok) {\n"
+                         "            const data = await response.json();\n"
+                         "            applyData(data);\n"
+                         "        }\n"
+                         "    }\n"
+                         "\n"
+                         "    refreshData();\n"
                          "</script>\n"
                          "<script>\n"
                          "    async function postTime() {\n"
@@ -303,7 +316,7 @@ DynamicJsonDocument getWifiJson() {
     return jsonDoc;
 }
 
-void httpDashboard() {
+DynamicJsonDocument getData() {
     DynamicJsonDocument jsonDoc(512);
 
     jsonDoc["ledValue"] = rgbGetValue();
@@ -316,13 +329,18 @@ void httpDashboard() {
     jsonDoc["logs"] = getLogsJson();
     jsonDoc["mqtt"] = getMQTTJson();
     jsonDoc["wifi"] = getWifiJson();
+    return jsonDoc;
+}
+
+void httpDashboard() {
+    server.send(200, "text/html", DASHBOARD);
+}
+void httpData() {
+    DynamicJsonDocument jsonDoc = getData();
 
     String jsonString;
     serializeJson(jsonDoc, jsonString);
-
-    String html = String(DASHBOARD);
-    html.replace("currentData;", jsonString + ";");
-    server.send(200, "text/html", html);
+    server.send(200, "application/json", jsonString);
 }
 
 void httpUpdateDebug() {
@@ -386,6 +404,7 @@ void httpSetDatetime() {
 void setupServer() {
     MDNS.addService("http", "tcp", 80);
     server.on("/", httpDashboard);
+    server.on("/data", httpData);
     server.on("/debug", HTTP_POST, httpUpdateDebug);
     server.on("/config", HTTP_POST, httpUpdateConfig);
     server.on("/wifi", HTTP_POST, httpUpdateWiFi);
