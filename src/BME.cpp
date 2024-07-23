@@ -46,6 +46,8 @@ float convertPressure(float value, PressureUnit unit) {
             return value;
         case PRESSURE_UNIT_MM:
             return value *  0.00750062;
+        default:
+            return value;
     }
 }
 

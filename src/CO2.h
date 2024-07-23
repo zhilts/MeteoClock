@@ -17,4 +17,6 @@ enum CO2_LEVEL {
 
 CO2_LEVEL getCO2Level();
 
+void zeroPointCalibration();
+
 #endif //METEO_CLOCK_CO2_H

@@ -40,3 +40,9 @@ CO2_LEVEL getCO2Level() {
     else if (co2Value < 1200) return CO2_LEVEL_WARNING;
     return CO2_LEVEL_ALERT;
 }
+
+void zeroPointCalibration() {
+    byte command[9] = {0xff, 0x01, 0x87, 0x00, 0x00, 0x00, 0x00, 0x00, 0x78};
+    mySerial.write(command, 9);
+    Serial.println("Zero Point Calibration Command Sent");
+}

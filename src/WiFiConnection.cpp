@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <WiFi.h>
-#include "Secrets.h"
 #include "Config.h"
+#include "Secrets.h"
 #include "WiFiConnection.h"
 #include "Log.h"
 #include "Memory.h"
@@ -23,6 +23,6 @@ void setupWifi() {
         WiFi.softAP(String(WIFI_AP_SSID).c_str(), String(WIFI_AP_PASSWORD).c_str());
         log("[WiFi] AP started");
     } else {
-        log("[WiFi] Connected to WiFi");
+        log("[WiFi] Connected to WiFi. IP: " + WiFi.localIP().toString());
     }
 }

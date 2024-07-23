@@ -1,6 +1,5 @@
 #include <EEPROM.h>
 #include "Memory.h"
-#include "Log.h"
 
 const int eepromSize = 512;
 const int ssidStartAddress = 0;
